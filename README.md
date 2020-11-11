@@ -1,2 +1,2 @@
-# fec-trip-advisor
-A Trip Advisor clone for our front end capsule project at Hack Reactor 2020
+# trip-advisor_reviews
+Review Module for a Trip Advisor clone
