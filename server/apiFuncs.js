@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-
+const keyword_extractor = require("keyword-extractor");
 
 const dbConnection = mysql.createConnection({
   user: 'root',
@@ -20,10 +20,37 @@ dbConnection.connect(function(err) {
 
 
 module.exports = {
-  // getPopularMentions: () => {
-  //   const reviewTextQ =  `SELECT reviewText AS review FROM reviews WHERE attractionID=${attractionID}`
-  // potentially use npm libary to find keywords from review text bodies
-  // },
+  getPopularMentions: (attractionID, callback) => {
+    const keywordList = [];
+    const reviewTextQ =  `SELECT reviewText AS review FROM reviews WHERE attractionID=${attractionID}`;
+    dbConnection.query(reviewTextQ, (err, results) => {
+      if(err) {
+        callback(error);
+      } else {
+        for(let i=0; i < results.length; i++) {
+          var sentence = results[i].review;
+          var extraction_result = keyword_extractor.extract(sentence,{
+            language:"english",
+            remove_digits: true,
+            return_changed_case:true,
+            remove_duplicates: true
+          });
+            keywordList.push(...extraction_result);
+        }
+        var allKeywordString = keywordList.join(' ');
+        var extraction = keyword_extractor.extract(allKeywordString,{
+          language:"english",
+          remove_digits: true,
+          return_changed_case:true,
+          remove_duplicates: true
+        });
+        var first20Keywords = {keywords: extraction.splice(0, 20)};
+        callback(null, first20Keywords);
+      }
+    })
+  //potentially use npm libary to find keywords from review text bodies
+  },
+
 
   getMetrics: (attractionID, callback) => {
     const metricQ = {
