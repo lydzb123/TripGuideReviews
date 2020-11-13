@@ -21,6 +21,7 @@ module.exports = {
 
 
   getAllAttractionReviews: (attractionID, callback) => {
+    // make queries for metrics object to add to response
     // var metrics;
     // dbConnection.query('SELECT COUNT(*) FROM reviews WHERE reviewLanguage="Spanish"', (res) => {
     //   metrics = res;
