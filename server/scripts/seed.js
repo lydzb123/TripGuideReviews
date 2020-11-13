@@ -1,6 +1,8 @@
 const faker = require("faker");
 const Seeder = require("mysql-db-seed").Seeder;
 const mysql = require('mysql');
+// const faker = require('faker/locale/ru');
+
 
 
 const dbConnection = mysql.createConnection({
@@ -13,21 +15,6 @@ dbConnection.connect();
 var maxUserID = 0;
 var maxAttractionID = 0;
 
-dbConnection.query('SELECT * FROM users ORDER BY userID DESC LIMIT 0, 1', (err, results) => {
-  if(err) {
-    console.log('db error' , err);
-  } else {
-    maxUserId = results;
-  }
-});
-
-dbConnection.query('SELECT * FROM attractions ORDER BY attractionID DESC LIMIT 0, 1', (err, results) => {
-  if(err) {
-    console.log('db error' , err);
-  } else {
-    maxAttractionID = results;
-  }
-});
 
 
 
@@ -55,16 +42,32 @@ const seed = new Seeder(
 
 
 for(let i = 0; i < 25; i++) {
+  dbConnection.query('SELECT * FROM users ORDER BY userID DESC LIMIT 0, 1', (err, results) => {
+    if(err) {
+      console.log('db error' , err);
+    } else {
+      maxUserId = results;
+    }
+  });
+
+  dbConnection.query('SELECT * FROM attractions ORDER BY attractionID DESC LIMIT 0, 1', (err, results) => {
+    if(err) {
+      console.log('db error' , err);
+    } else {
+      maxAttractionID = results;
+    }
+  });
+
+
   (async () => {
     await seed.seed(
       1,
       "users",
       {
-            username: faker.internet.userName,
+            username: faker.internet.userName(),
             userLocation: faker.address.city() + ', ' + faker.address.state(),
             contributions: faker.random.number({min: 1, max: 100}),
             profilePhoto: faker.image.people
-
       },
     )
     seed.exit();
@@ -98,17 +101,4 @@ for(let i = 0; i < 25; i++) {
     seed.exit();
     process.exit();
   })();
-
-
-
 }
-
-
-
-
-
-
-
-
-
-//node seed.js

@@ -3,7 +3,8 @@ const mysql = require('mysql');
 
 const dbConnection = mysql.createConnection({
   user: 'root',
-  database: 'tripAdvisor'
+  database: 'tripAdvisor',
+  multipleStatements: true
 });
 
 dbConnection.connect(function(err) {
@@ -16,41 +17,55 @@ dbConnection.connect(function(err) {
 });
 
 
+
+
 module.exports = {
+  // getPopularMentions: () => {
+  //   const reviewTextQ =  `SELECT reviewText AS review FROM reviews WHERE attractionID=${attractionID}`
+  // potentially use npm libary to find keywords from review text bodies
+  // },
 
+  getMetrics: (attractionID, callback) => {
+    const metricQ = {
+      totalReviews: `SELECT COUNT(*) AS totalReviews FROM reviews WHERE attractionID=${attractionID}`,
+      travelerRatings: `SELECT travelerRating AS rating, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY travelerRating`,
+      languages: `SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY reviewLanguage`
+    }
+    dbConnection.query(`${metricQ.totalReviews}; ${metricQ.travelerRatings}; ${metricQ.languages}`, (err, result) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, result)
+      }
+    });
+  },
 
-
-  getAllAttractionReviews: (attractionID, callback) => {
-    // make queries for metrics object to add to response
-    // var metrics;
-    // dbConnection.query('SELECT COUNT(*) FROM reviews WHERE reviewLanguage="Spanish"', (res) => {
-    //   metrics = res;
-    //   console.log('-------METRICXS!!!!!!!--------', res);
-    // });
-
-    dbConnection.query(`
-    SELECT
-      username, userLocation, contributions, profilePhoto,
-      title, dateOfReview, reviewText, reviewLanguage, travelerRating, dateOfExperience
-    FROM
-      reviews r
-    INNER JOIN users u
-    WHERE attractionID=${attractionID}
-    ORDER BY dateOfReview
-    LIMIT 5
-    `,
+  getReviews: (attractionID, callback) => {
+    const reviewQ = {
+      all: `
+      SELECT
+        r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+        r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
+      FROM reviews r
+      INNER JOIN users u
+      WHERE attractionID=${attractionID}
+      ORDER BY dateOfReview DESC
+      LIMIT 5`,
+      users: `SELECT * FROM users u INNER JOIN reviews r WHERE r.attractionID=${attractionID} ORDER BY r.dateOfReview DESC LIMIT 5`
+    }
+    dbConnection.query(`${reviewQ.all}`,
     (err, results) => {
-      if(err) {
+      if (err) {
         console.log('----went into getAllAttractionReviews ERROR statement')
         throw err;
       } else {
         console.log('----went into getAllAttractionReviews SUCCESS statement');
         // console.log('RESULTS from SQL', results);
-
         callback(results);
       }
     });
   }
+
 }
 
 
