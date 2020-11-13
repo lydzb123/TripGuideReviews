@@ -1,3 +1,5 @@
+
+DROP DATABASE IF exists tripAdvisor;
 CREATE DATABASE tripAdvisor;
 
 USE tripAdvisor;
@@ -19,7 +21,6 @@ CREATE TABLE users (
 );
 
 
-
 CREATE TABLE reviews (
   reviewID int NOT NULL AUTO_INCREMENT,
   userID int NOT NULL,
@@ -29,8 +30,8 @@ CREATE TABLE reviews (
   reviewText text NOT NULL,
   travelerRating INT,
   travelerType VARCHAR(50),
-  dateOfExperience VARCHAR(250),
-  dateOfReview VARCHAR(250),
+  dateOfExperience DATE,
+  dateOfReview DATE,
   reviewLanguage VARCHAR(200),
   photos VARCHAR(200),
 

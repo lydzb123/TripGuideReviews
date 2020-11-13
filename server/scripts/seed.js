@@ -3,13 +3,10 @@ const Seeder = require("mysql-db-seed").Seeder;
 const mysql = require('mysql');
 
 
-
-
 const dbConnection = mysql.createConnection({
   user: 'root',
   database: 'tripAdvisor'
 });
-
 dbConnection.connect();
 
 
@@ -35,7 +32,7 @@ dbConnection.query('SELECT * FROM attractions ORDER BY attractionID DESC LIMIT 0
 
 
 const seed = new Seeder(
-  5,
+  1,
   "localhost",
   "root",
   "",
@@ -43,14 +40,12 @@ const seed = new Seeder(
 );
 
 
-let attraction = faker.address.city();
-
 (async () => {
   await seed.seed(
     1,
     "attractions",
     {
-          attractionName: attraction
+          attractionName: faker.address.city
     },
   )
   seed.exit();
@@ -59,14 +54,14 @@ let attraction = faker.address.city();
 
 
 
-for(let i = 0; i < 5; i++) {
+for(let i = 0; i < 25; i++) {
   (async () => {
     await seed.seed(
       1,
       "users",
       {
             username: faker.internet.userName,
-            userLocation: faker.address.city() + ', ' + faker.address.stateAbbr(),
+            userLocation: faker.address.city() + ', ' + faker.address.state(),
             contributions: faker.random.number({min: 1, max: 100}),
             profilePhoto: faker.image.people
 
@@ -88,10 +83,12 @@ for(let i = 0; i < 5; i++) {
       {
         attractionID: faker.random.number({min: 1, max: maxAttractionID}),
         userID: faker.random.number({min: 1, max: maxUserID}),
-        title: faker.lorem.sentence,
-        reviewText: faker.lorem.paragraph,
-        dateOfExperience: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
-        dateOfReview: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
+        title: faker.random.words(12),
+        reviewText: faker.random.words(50),
+        dateOfExperience: faker.date.recent,
+        dateOfReview: faker.date.recent,
+        // dateOfExperience: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
+        // dateOfReview: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
         travelerRating: faker.random.number({min: 1, max: 5}),
         travelerType: travelerTypes[faker.random.number({min: 0, max: 4})],
         reviewLanguage: reviewLanguages[faker.random.number({min: 0, max: 6})],
