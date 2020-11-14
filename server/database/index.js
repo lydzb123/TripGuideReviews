@@ -1,8 +1,11 @@
 var mysql = require('mysql');
 
 
-module.exports.dbConnection = mysql.createConnection({
+module.exports.db = mysql.createConnection({
   user: 'root',
   database: 'tripAdvisor'
 });
+
+
+
 

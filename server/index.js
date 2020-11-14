@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-
+/* GET POPULAR MENTIONS */
 app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
   var attractionID = req.params.attractionid;
 
@@ -22,6 +22,7 @@ app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
 
 });
 
+/* GET REVIEWS */
 app.get('/api/attractions/:attractionid/reviews', (req, res) => {
   var attractionID = req.params.attractionid;
 
@@ -34,25 +35,20 @@ app.get('/api/attractions/:attractionid/reviews', (req, res) => {
       res.status(200).send(reviews);
     }
   });
-  //i want to get my seeded data for my correlating attraction ID
-  //get reviews for the same attraction id
-  //show a list of first 5 reviews by order of date descending
-
-  // eventually send metrics too!
-  // res.send('hey this is working');
 });
 
 
+/* GET REVIEWS METRICS */
 app.get('/api/attractions/:attractionid/reviews/metrics', (req, res) => {
   var attractionID = req.params.attractionid;
 
-  getMetrics(attractionID, (err, reviews) => {
+  getMetrics(attractionID, (err, metrics) => {
     if(err) {
       console.log('serverside error---------------', err);
       res.status(404).send(err);
     } else {
-      console.log('serverside success---------------', reviews);
-      res.status(200).send(reviews);
+      console.log('serverside success---------------', metrics);
+      res.status(200).send(metrics);
     }
   });
 

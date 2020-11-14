@@ -45,6 +45,9 @@ module.exports = {
           remove_duplicates: true
         });
         var first20Keywords = {keywords: extraction.splice(0, 20)};
+
+        //insert into attraction DB to cache the keywords?
+        //if another review is added, clearcache and run query again
         callback(null, first20Keywords);
       }
     })
@@ -56,7 +59,7 @@ module.exports = {
     const metricQ = {
       totalReviews: `SELECT COUNT(*) AS totalReviews FROM reviews WHERE attractionID=${attractionID}`,
       travelerRatings: `SELECT travelerRating AS rating, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY travelerRating`,
-      languages: `SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY reviewLanguage`
+      languages: `SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY reviewLanguage`,
     }
     dbConnection.query(`${metricQ.totalReviews}; ${metricQ.travelerRatings}; ${metricQ.languages}`, (err, result) => {
       if (err) {
