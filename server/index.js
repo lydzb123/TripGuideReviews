@@ -5,7 +5,9 @@ const {getReviews, getMetrics, getPopularMentions} = require('./apiFuncs.js');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.use(express.static('client'));
 
+app.get('/', )
 /* GET POPULAR MENTIONS */
 app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
   var attractionID = req.params.attractionid;

@@ -12,7 +12,6 @@
     "start": "nodemon server",
     "seed": "mysql -u root < ./server/database/schema.sql && node server/scripts/seedUsersAndAttractions.js && node server/scripts/seedReviews.js"
   },
-
   "dependencies": {
     "axios": "^0.21.0",
     "express": "^4.17.1",
