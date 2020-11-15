@@ -4,6 +4,8 @@ import TravelerTypeForm from './TravelerTypeForm.jsx';
 import TimeOfYearForm from './TimeOfYearForm.jsx';
 import LanguageForm from './LanguageForm.jsx';
 import PopularMentionsForm from './PopularMentionsForm.jsx';
+import ReviewsList from './ReviewsList.jsx'
+import axios from 'axios';
 
 
 class ReviewsModule extends React.Component {
@@ -14,9 +16,59 @@ class ReviewsModule extends React.Component {
       travelerTypeFilter: [],
       timeOfYearFilter: [],
       languageFilter: [],
-      popularMentionsFilter: []
+      popularMentionsFilter: [],
+
+      totalReviews: [],
+      totalRatings: [],
+      totalLanguages: [],
+      reviewsList: []
     };
     //put any binded functions here
+    this.getReviews = this.getReviews.bind(this);
+  }
+
+  //when combining components, i will need to find the attractionID
+
+  getReviews(attractionID) {
+    axios.get(`/api/attractions/${attractionID}/reviews`)
+    .then((res) => {
+      this.setState({
+        reviewsList: res.data
+      });
+    })
+    .catch((err) => {
+      console.log('unncessucful get')
+    })
+  }
+
+
+  getMetrics(attractionID) {
+    axios.get(`/api/attractions/${attractionID}/reviews/metrics`)
+    .then((res) => {
+      this.setState({
+        totalReviews: res.data[0][0].totalReviews,
+        totalRatings: res.data[1],
+        totalLanguages: res.data[2]
+      });
+      console.log(this.state.totalRatings);
+    })
+    .catch((err) => {
+      console.log('unncessucful get')
+    })
+  }
+
+
+
+
+
+  componentDidMount() {
+    var attractionID = 1;
+    this.getReviews(attractionID);
+    this.getMetrics(attractionID);
+
+
+
+
   }
 
   render() {
@@ -29,21 +81,27 @@ class ReviewsModule extends React.Component {
           <div className="filterReviews">
 
             <div className ="mainFilters">
-              <TravelerRatingForm/>
+
+              <form className="filterForm">
+              <TravelerRatingForm ratings={this.state.totalRatings}/>
               <TravelerTypeForm/>
               <TimeOfYearForm/>
               <LanguageForm/>
-              <PopularMentionsForm/>
+              </form>
+
             </div>
+            <PopularMentionsForm/>
 
           </div>
+
+
 
           <div className="searchBar">
             [SomeSearchBar]
           </div>
 
            <div className="reviewsList">
-            [ReviewListHere]
+             <ReviewsList reviewsList={this.state.reviewsList}/>
           </div>
 
         </div>

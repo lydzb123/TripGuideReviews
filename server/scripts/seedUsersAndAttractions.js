@@ -22,7 +22,7 @@ const seed = new Seeder(
 
 
 let seedAttractions = async () => {
-  for (let i = 0; i <50; i++) {
+  for (let i = 0; i <25; i++) {
     (async () => {
       await seed.seed(
         1,
@@ -43,7 +43,7 @@ let seedAttractions = async () => {
             username: faker.internet.userName(),
             userLocation: faker.address.city() + ', ' + faker.address.state(),
             contributions: faker.random.number({min: 1, max: 100}),
-            profilePhoto: faker.image.people
+            profilePhoto: faker.image.avatar()
           },
         )
         seed.exit();

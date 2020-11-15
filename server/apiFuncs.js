@@ -82,16 +82,17 @@ module.exports = {
       ORDER BY dateOfReview DESC
       LIMIT 5`,
       users: `SELECT * FROM users u INNER JOIN reviews r WHERE r.attractionID=${attractionID} ORDER BY r.dateOfReview DESC LIMIT 5`
+      //chose one query
     }
     dbConnection.query(`${reviewQ.all}`,
     (err, results) => {
       if (err) {
-        console.log('----went into getAllAttractionReviews ERROR statement')
+        console.log('----went into getReviews ERROR statement')
         throw err;
       } else {
-        console.log('----went into getAllAttractionReviews SUCCESS statement');
+        console.log('----went into getReviews SUCCESS statement');
         // console.log('RESULTS from SQL', results);
-        callback(results);
+        callback(null, results);
       }
     });
   }

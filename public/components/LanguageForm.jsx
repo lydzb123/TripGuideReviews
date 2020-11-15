@@ -8,7 +8,6 @@ const LanguageForm = () => {
     <div className="filterFormContainer" id="LanguageForm">
 
       <h2>Language</h2>
-      <form className="filterForm">
 
         {languageOptions.map(option => (
           <div className ="inputLine">
@@ -18,7 +17,6 @@ const LanguageForm = () => {
           </div>
         ))}
 
-      </form>
     </div>
   )
 

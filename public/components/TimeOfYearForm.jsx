@@ -8,7 +8,6 @@ const TimeOfYearForm = () => {
     <div className="filterFormContainer" id="TimeOfYearForm">
 
       <h2>Time of Year</h2>
-      <form className="filterForm">
 
         {TimeOfYearOptions.map(option => (
           <div className ="inputLine">
@@ -17,8 +16,6 @@ const TimeOfYearForm = () => {
               </label>
           </div>
         ))}
-
-      </form>
     </div>
   )
 

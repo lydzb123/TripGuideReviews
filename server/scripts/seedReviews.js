@@ -49,7 +49,8 @@ let maxUserIDQuery = () => {
 
 let seedReviews = async () => {
 
-  for(let i = 0; i < 100; i++) {
+  for(let i = 0; i < 3000; i++) {
+
   (async () => {
     var travelerTypes = ["Families", "Couples", "Solo", "Business", "Friends"];
     var reviewLanguages = ["English", "Chinese (Trad.)", "Japanese", "French", "German", "Spanish", "Italian", "Danish", "Korean", "Hebrew"];
@@ -60,8 +61,8 @@ let seedReviews = async () => {
       {
         attractionID: faker.random.number({min: 1, max: maxAttractionID}),
         userID: faker.random.number({min: 1, max: maxUserID}),
-        title: faker.company.catchPhrase(12),
-        reviewText: faker.random.words(50),
+        title: faker.random.words(12),
+        reviewText: faker.random.words(120),
         dateOfExperience: faker.date.recent,
         dateOfReview: faker.date.recent,
         // dateOfExperience: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],

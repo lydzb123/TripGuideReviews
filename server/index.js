@@ -7,22 +7,6 @@ app.use(express.json());
 
 app.use(express.static('client'));
 
-app.get('/', )
-/* GET POPULAR MENTIONS */
-app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
-  var attractionID = req.params.attractionid;
-
-  getPopularMentions(attractionID, (err, keywords) => {
-    if (err) {
-      console.log('serverside error---------------', err);
-      res.status(404).send(err);
-    } else {
-      console.log('serverside success---------------', keywords);
-      res.send(keywords);
-    }
-  });
-
-});
 
 /* GET REVIEWS */
 app.get('/api/attractions/:attractionid/reviews', (req, res) => {
@@ -30,7 +14,7 @@ app.get('/api/attractions/:attractionid/reviews', (req, res) => {
 
   getReviews(attractionID, (err, reviews) => {
     if(err) {
-      console.log('serverside error---------------', err);
+      console.log('serverside error---------------', typeof err);
       res.status(404).send(err);
     } else {
       console.log('serverside success---------------', reviews);
@@ -55,6 +39,25 @@ app.get('/api/attractions/:attractionid/reviews/metrics', (req, res) => {
   });
 
 });
+
+
+
+/* GET POPULAR MENTIONS */
+app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
+  var attractionID = req.params.attractionid;
+
+  getPopularMentions(attractionID, (err, keywords) => {
+    if (err) {
+      console.log('serverside error---------------', err);
+      res.status(404).send(err);
+    } else {
+      console.log('serverside success---------------', keywords);
+      res.send(keywords);
+    }
+  });
+
+});
+
 
 
 
