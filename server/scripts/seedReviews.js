@@ -61,7 +61,7 @@ let seedReviews = async () => {
       {
         attractionID: faker.random.number({min: 1, max: maxAttractionID}),
         userID: faker.random.number({min: 1, max: maxUserID}),
-        title: faker.random.words(12),
+        title: faker.random.words(8),
         reviewText: faker.random.words(120),
         dateOfExperience: faker.date.recent,
         dateOfReview: faker.date.recent,

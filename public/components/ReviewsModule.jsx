@@ -8,19 +8,35 @@ import PopularMentionsForm from './PopularMentionsForm.jsx';
 import ReviewsList from './ReviewsList.jsx'
 import axios from 'axios';
 
+const ReviewsModuleWrapper = styled.div`
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: space-around;
+  width: 600px;
+  margin: 0 auto;
+  margin-top: -10px;
+`
 const FormWrapper = styled.div`
   display: flex;
   justify-content: space-around;
-  background-color: red;
   width: 100%;
+  background-color: white;
+
+  input {
+    padding: 12px 0 0 0;
+    transition: background-color 0.5s ease-out;
+  }
   `
-
 const Filter = styled.div`
-  background-color: green;
-  padding: 4px;
+  font-size: 12px;
+  font-family: arial;
+  padding: 8px 14px;
   display: inline-flex;
-  margin: 0px 10px;
 
+
+  h2 {
+    font-size: 12px;
+  }
 `;
 class ReviewsModule extends React.Component {
   constructor(props) {
@@ -35,10 +51,14 @@ class ReviewsModule extends React.Component {
       totalReviews: [],
       totalRatings: [],
       totalLanguages: [],
-      reviewsList: []
+      reviewsList: [],
+      popularMentions: []
     };
     //put any binded functions here
     this.getReviews = this.getReviews.bind(this);
+    this.getMetrics = this.getMetrics.bind(this);
+    this.getPopularMentions = this.getPopularMentions.bind(this);
+
   }
 
   //when combining components, i will need to find the attractionID
@@ -51,7 +71,8 @@ class ReviewsModule extends React.Component {
       });
     })
     .catch((err) => {
-      console.log('unncessucful get')
+      throw err;
+      console.log('unsuccessful get reviews')
     })
   }
 
@@ -64,10 +85,26 @@ class ReviewsModule extends React.Component {
         totalRatings: res.data[1],
         totalLanguages: res.data[2]
       });
-      console.log(this.state.totalRatings);
+      console.log('lang:-------', this.state.totalLanguages);
     })
     .catch((err) => {
-      console.log('unncessucful get')
+      throw err;
+      console.log('unsuccessful get metrics')
+    })
+  }
+
+  getPopularMentions(attractionID)
+  {
+    axios.get(`/api/attractions/${attractionID}/reviews/keywords`)
+    .then((res) => {
+      this.setState({
+        popularMentions: res.data.keywords
+      });
+      console.log(this.state.popularMentions);
+    })
+    .catch((err) => {
+      throw err;
+      console.log('unsuccessful get popularmentions')
     })
   }
 
@@ -79,6 +116,7 @@ class ReviewsModule extends React.Component {
     var attractionID = 1;
     this.getMetrics(attractionID);
     this.getReviews(attractionID);
+    this.getPopularMentions(attractionID);
 
 
 
@@ -88,7 +126,7 @@ class ReviewsModule extends React.Component {
   render() {
 
     return (
-      <div>
+      <ReviewsModuleWrapper>
         <div className="filtersAndReviewsList">
           <h1>Reviews</h1>
 
@@ -96,16 +134,16 @@ class ReviewsModule extends React.Component {
 
             <div className ="mainFilters">
               <FormWrapper>
-              <form className="filterForm">
-              <Filter><TravelerRatingForm ratings={this.state.totalRatings}/></Filter>
-              <Filter><TravelerTypeForm/></Filter>
-              <Filter><TimeOfYearForm/></Filter>
-              <Filter><LanguageForm/></Filter>
-              </form>
+                <form className="filterForm">
+                  <Filter><TravelerRatingForm ratings={this.state.totalRatings}/></Filter>
+                  <Filter><TravelerTypeForm/></Filter>
+                  <Filter><TimeOfYearForm/></Filter>
+                  <Filter><LanguageForm languages={this.state.totalLanguages} totalReviews={this.state.totalReviews}/></Filter>
+                </form>
               </FormWrapper>
 
             </div>
-            <PopularMentionsForm/>
+            <PopularMentionsForm keywords={this.state.popularMentions}/>
 
           </div>
 
@@ -121,7 +159,7 @@ class ReviewsModule extends React.Component {
 
         </div>
 
-      </div>
+      </ReviewsModuleWrapper>
     )
   }
 

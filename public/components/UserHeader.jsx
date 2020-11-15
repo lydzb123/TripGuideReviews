@@ -1,17 +1,42 @@
 import React from 'react';
+import styled from 'styled-components';
 
-const UserHeader = ({name, profilePhoto, reviewDate, location, contributions})=> {
+
+
+const UserHeader = ({name, profilePhoto, reviewDate, location, contributions}) => {
+
+  const UserHeaderBar = styled.div`
+  display: flex;
+
+  img {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    margin: 12px 12px 12px 24px;
+
+  }
+
+  .userHead {
+    margin: 12px 0 0 0;
+    display: block;
+    font-size: 12px;
+
+  }
+
+  .userInfo {
+    font-size: 12px;
+    color: grey;
+  }
+
+
+  `;
   return(
-    <div>
+    <UserHeaderBar>
       <img src={profilePhoto}/>
-  <div><h3>{name}</h3> wrote a review {reviewDate}
-  <div className="userInfo">{location} • {contributions} contributions</div>
-  <div className="elipsisMenu">[...]</div>
+      <div className="userHead"><b>{name}</b> wrote a review {reviewDate}
+      <div className="userInfo">{location} • {contributions} contributions</div></div>
+    </UserHeaderBar>
 
-  </div>
-
-
-    </div>
   )
 
 }

@@ -1,27 +1,64 @@
 import React from 'react';
+import styled from 'styled-components';
 
 
-const PopularMentionsForm = () => {
+
+
+const PopularMentionsForm = ({keywords}) => {
+
+  const ButtonsContainer = styled.div`
+  padding: 4px 0 12px 0;
+  display: flex-inline;
+  justify-content: space-around;
+  width: 100%;
+
+  label {
+    font-size: 14px;
+  }
+
+  button {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin: 8px 0 0 8px;
+    background-color: white;
+    outline: none;
+  }
+
+  button:hover {
+    background-color: #D3D3D3;
+    outline: none;
+
+  }
+
+  button:active {
+    background-color: black;
+    color: white;
+    outline: none;
+  }
+  `;
+
+  const FilterFormContainer = styled.div`
+  background-color: white;
+  padding: 12px;
+  `;
+
   //get all keywords
-  //assign to keywordOptions array
-  const keywordOptions = ["keyword1", "keyword2", "keyword3", "keyword4"];
+  //assign to keywordwords array
 
   return (
-    <div className="filterFormContainer" id="PopularMentionsForm">
+   <FilterFormContainer>
 
-      <h2>Popular Mentions</h2>
+      <label>Popular Mentions</label>
       <form className="filterForm">
-
-        {keywordOptions.map(option => (
-          <div className ="inputLine">
-              <label>
-                <input type="button" className="filterFormbutton" name={option} value={option}/>
-              </label>
-          </div>
+      <ButtonsContainer>
+        {keywords.map(word => (
+            <button className="filterFormbutton" value={word}>{word}</button>
         ))}
+      </ButtonsContainer>
 
       </form>
-    </div>
+      </FilterFormContainer>
   )
 
 }
