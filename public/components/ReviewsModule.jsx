@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import TravelerRatingForm from './TravelerRatingForm.jsx';
 import TravelerTypeForm from './TravelerTypeForm.jsx';
 import TimeOfYearForm from './TimeOfYearForm.jsx';
@@ -7,7 +8,20 @@ import PopularMentionsForm from './PopularMentionsForm.jsx';
 import ReviewsList from './ReviewsList.jsx'
 import axios from 'axios';
 
+const FormWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  background-color: red;
+  width: 100%;
+  `
 
+const Filter = styled.div`
+  background-color: green;
+  padding: 4px;
+  display: inline-flex;
+  margin: 0px 10px;
+
+`;
 class ReviewsModule extends React.Component {
   constructor(props) {
     super(props);
@@ -63,8 +77,8 @@ class ReviewsModule extends React.Component {
 
   componentDidMount() {
     var attractionID = 1;
-    this.getReviews(attractionID);
     this.getMetrics(attractionID);
+    this.getReviews(attractionID);
 
 
 
@@ -81,13 +95,14 @@ class ReviewsModule extends React.Component {
           <div className="filterReviews">
 
             <div className ="mainFilters">
-
+              <FormWrapper>
               <form className="filterForm">
-              <TravelerRatingForm ratings={this.state.totalRatings}/>
-              <TravelerTypeForm/>
-              <TimeOfYearForm/>
-              <LanguageForm/>
+              <Filter><TravelerRatingForm ratings={this.state.totalRatings}/></Filter>
+              <Filter><TravelerTypeForm/></Filter>
+              <Filter><TimeOfYearForm/></Filter>
+              <Filter><LanguageForm/></Filter>
               </form>
+              </FormWrapper>
 
             </div>
             <PopularMentionsForm/>
