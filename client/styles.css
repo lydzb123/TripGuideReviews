@@ -3,3 +3,10 @@
   --dot-color: white;
   --dot-fill: #00aa6c;
 }
+
+
+hr{
+  height: 1px;
+  background-color: #ccc;
+  border: none;
+}

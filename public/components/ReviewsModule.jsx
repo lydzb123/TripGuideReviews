@@ -11,20 +11,33 @@ import axios from 'axios';
 const ReviewsModuleWrapper = styled.div`
   font-family: 'Poppins', sans-serif;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 600px;
   margin: 0 auto;
   margin-top: -10px;
+
+  .mainFilters{
+    background-color: white;
+    margin-top: 0;
+    padding-top: 12px;
+  }
+
+  h1 {
+    margin-left: 22px;
+  }
 `
 const FormWrapper = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
   background-color: white;
 
   input {
     padding: 12px 0 0 0;
     transition: background-color 0.5s ease-out;
+  }
+
+  .filterForm {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
   }
   `
 const Filter = styled.div`
@@ -128,14 +141,15 @@ class ReviewsModule extends React.Component {
     return (
       <ReviewsModuleWrapper>
         <div className="filtersAndReviewsList">
-          <h1>Reviews</h1>
 
           <div className="filterReviews">
-
             <div className ="mainFilters">
+            <h1>Reviews</h1>
+            <hr />
+
               <FormWrapper>
                 <form className="filterForm">
-                  <Filter><TravelerRatingForm ratings={this.state.totalRatings}/></Filter>
+                  <Filter><TravelerRatingForm ratings={this.state.totalRatings} totalReviews={this.state.totalReviews}/></Filter>
                   <Filter><TravelerTypeForm/></Filter>
                   <Filter><TimeOfYearForm/></Filter>
                   <Filter><LanguageForm languages={this.state.totalLanguages} totalReviews={this.state.totalReviews}/></Filter>
