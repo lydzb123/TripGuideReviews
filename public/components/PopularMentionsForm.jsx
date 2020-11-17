@@ -18,8 +18,9 @@ button {
   border-radius: 4px;
   padding: 6px 10px;
   margin: 8px 0 0 8px;
-  background-color: white;
+  x white;
   outline: none;
+  background-color: white;
 }
 
 .allReviewsButton {
@@ -37,6 +38,12 @@ button:focus {
   color: white;
   outline: none;
 }
+
+button:active {
+  background-color: black;
+  color: white;
+  outline: none;
+}
 `;
 
 const FilterFormContainer = styled.div`
@@ -50,25 +57,24 @@ const PopularMentionsForm = ({keywords, handleFilterClick}) => {
 
   const [words, setWords] = useState({});
 
-  var isSelected = false;
-
   const addWord = (e) => {
-    //if value is not in words obj already
     const newObj = {...words};
     let word = e.target.value;
-    newObj[word]? delete newObj[word] : newObj[word] = true;
+    if(newObj[word]) {
+      newObj[word]  = "white";
+    } else {
+      newObj[word] = "black";
+      }
+
     setWords({
     ...newObj
     });
+
   };
-
-
-
 
 
   return (
      <FilterFormContainer>
-
         <label>Popular Mentions</label>
           <ButtonsContainer>
           <button className="popularMentionsFilter" value="allReviews"
@@ -79,10 +85,13 @@ const PopularMentionsForm = ({keywords, handleFilterClick}) => {
           </button>
             {keywords.map((word, i) => (
                 <button className="popularMentionsFilter" value={word}
-                onClick={(e) => {
-                  handleFilterClick(e);
-                  addWord(e);
-                  }} key={i}>{word}
+                  onClick={(e) => {
+                    handleFilterClick(e);
+                    addWord(e);
+                  }}
+                  style={{backgroundColor: words[word]}}
+                  key={i}>
+                  {word}
                 </button>
             ))}
           </ButtonsContainer>

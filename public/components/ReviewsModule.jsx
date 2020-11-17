@@ -42,14 +42,53 @@ const FormWrapper = styled.div`
   }
   `
 const Filter = styled.div`
-  font-size: 12px;
+  font-size: 13px;
   font-family: arial;
   padding: 8px 8px;
 
+
   h2 {
-    font-size: 12px;
+    font-size: 13px;
   }
+
+
+
+input[type=checkbox] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  padding: 6px;
+  background-clip: content-box;
+  border: 1px solid black;
+  background-color: #e7e6e7;
+  outline: none;
+}
+
+
+input[type=radio] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  padding: 6px;
+  background-clip: content-box;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: #e7e6e7;
+  outline: none;
+}
 `;
+
+
+//fix checkbox and radio input css for active
+//toggle select and deselect visuals
+
+//add selected state to popular mention buttons
+//add selected to searchbar
+
 class ReviewsModule extends React.Component {
   constructor(props) {
     super(props);
@@ -59,8 +98,9 @@ class ReviewsModule extends React.Component {
       travelerRatingFilter: [],
       travelerTypeFilter: [],
       timeOfYearFilter: [],
-      languageFilter: [],
+      languageFilter: ["allLanguages"],
       popularMentionsFilter: [],
+      query: "",
       allFilters: {},
 
       totalReviews: [],
@@ -74,6 +114,8 @@ class ReviewsModule extends React.Component {
     this.getMetrics = this.getMetrics.bind(this);
     this.getPopularMentions = this.getPopularMentions.bind(this);
     this.handleFilterClick = this.handleFilterClick.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind()
   }
 
   //when combining components, i will need to put the attractionID in state
@@ -125,11 +167,21 @@ class ReviewsModule extends React.Component {
 
   handleFilterClick (event) {
   event.preventDefault();
+
   let key = event.target.className;
   let val = event.target.value;
 
+  console.log(key, val);
   let filter = this.state[key];
-  key === "languageFilter" ? filter = val : filter.push(val);
+  if(key === "languageFilter") {
+    this.state[key] = val;
+    filter = val;
+  }
+  else if(filter.includes(val) === false){
+      filter.push(val);
+  }
+
+  //can only be selected // should be switched to a toggle eventually
 
   let allFilters =  {
     travelerRating: this.state.travelerRatingFilter,
@@ -144,6 +196,29 @@ class ReviewsModule extends React.Component {
     });
 
   };
+
+
+  handleSearchChange (e) {
+    event.preventDefault();
+    if(e.key === "Enter"){
+      alert("Enter was just pressed.");
+    } else {
+      this.setState({
+        query: [e.target.value]
+      });
+    }
+  }
+
+  //onkeypress can detect enter
+  //onchange detects everything but is not submitting form on enter
+
+  handleSearchSubmit (e) {
+    if(e.key === "Enter"){
+      alert("Enter was just pressed.");
+    }
+    return false;
+  };
+
 
 
   componentDidMount() {
@@ -195,7 +270,7 @@ class ReviewsModule extends React.Component {
 
 
           <div className="searchBar">
-            <SearchBar handleFilterClick={this.handleFilterClick}/>
+            <SearchBar handleSearchChange={this.handleSearchChange} selectedPopularMentions={this.state.popularMentionsFilter} handleSearchSubmit={this.handleSearchSubmit} query={this.state.query}/>
           </div>
 
            <div className="reviewsList">
