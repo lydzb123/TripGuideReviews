@@ -1,4 +1,5 @@
 import React from 'react';
+import ReviewRatingMeter from './ReviewRatingMeter.jsx'
 import styled from 'styled-components';
 
 
@@ -41,28 +42,6 @@ p {
   padding: 0 20px;
 }`;
 
-const RatingMeter = styled.div`
-  --percent: calc(var(--ratingNum) / 5 * 100%);
-
-  display: inline-block;
-  font-size: var(--dot-size);
-  font-family: Times; // make sure ★ appears correctly
-  line-height: -10;
-  padding: 0 20px;
-
-  &::before {
-    content: '•••••';
-    letter-spacing: 3px;
-    padding: 0;
-    margin: 0;
-    background: linear-gradient(90deg, var(--dot-fill) var(--percent), var(--dot-color) var(--percent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: #00aa6c;
-    -webkit-text-stroke: 3px #00aa6c;
-
-  }
-`;
-
 
 const ReviewBody = ({rating, title, text, photos, experienceDate})=> {
 
@@ -72,10 +51,10 @@ const ReviewBody = ({rating, title, text, photos, experienceDate})=> {
     <div className="space">
     <ReviewWrapper>
       <img src="https://placeimg.com/1000/200/arch"/>
-      <RatingMeter style={{ratingNum: number}}/>
-      <h4>{title}</h4>
-      <p>{text}</p>
-      <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
+      <ReviewRatingMeter rating={rating}/>
+        <h4>{title}</h4>
+        <p>{text}</p>
+        <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
     </ReviewWrapper>
     </div>
   )
