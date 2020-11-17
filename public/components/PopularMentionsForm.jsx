@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 
@@ -32,7 +32,7 @@ button:hover {
 
 }
 
-button:active {
+button:focus {
   background-color: black;
   color: white;
   outline: none;
@@ -47,18 +47,43 @@ padding: 12px;
 
 
 const PopularMentionsForm = ({keywords, handleFilterClick}) => {
-  //get all keywords
-  //assign to keywordwords array
+
+  const [words, setWords] = useState({});
+
+  var isSelected = false;
+
+  const addWord = (e) => {
+    //if value is not in words obj already
+    const newObj = {...words};
+    let word = e.target.value;
+    newObj[word]? delete newObj[word] : newObj[word] = true;
+    setWords({
+    ...newObj
+    });
+  };
+
+
+
+
 
   return (
      <FilterFormContainer>
 
         <label>Popular Mentions</label>
           <ButtonsContainer>
-          <button className="popularMentionsFilter" value="allReviews" onClick={handleFilterClick}>All Reviews</button>
+          <button className="popularMentionsFilter" value="allReviews"
+            onClick={(e) => {
+              handleFilterClick(e);
+            }}>
+          All Reviews
+          </button>
             {keywords.map((word, i) => (
                 <button className="popularMentionsFilter" value={word}
-                onClick={e => handleFilterClick(e)} key={i}>{word}</button>
+                onClick={(e) => {
+                  handleFilterClick(e);
+                  addWord(e);
+                  }} key={i}>{word}
+                </button>
             ))}
           </ButtonsContainer>
 
