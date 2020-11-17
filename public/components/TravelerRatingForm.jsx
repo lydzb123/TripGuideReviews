@@ -2,35 +2,52 @@ import React from 'react';
 import styled from 'styled-components';
 import RatingBar from './RatingBar.jsx';
 
-const TravelerRatingForm = ({ratings, totalReviews}) => {
+
+const TravelerRatingsForm = styled.div`
+.inputLine {
+width: 220px;
+label {
+  display: flex;
+  align-items: flex-start;
+  padding: 6px;
+
+  .optionLabel {
+  width: 80px;
+  }
+}
+`;
+
+
+const TravelerRatingForm = ({ratings, totalReviews, handleFilterClick}) => {
   const travelerRatingOptions = ["Excellent", "Very Good", "Average", "Poor", "Terrible"];
 
-  const RatingBarBackground = styled.div`
-  background-color: #e0e0e0;
-  border-radius: 2px;
-  background-color: black;
-  `;
-
-
-
   return (
-    <div className="filterFormContainer" id="TravelerRatingForm">
-
+    <div>
+    <TravelerRatingsForm>
       <h2>Traveler Rating</h2>
 
         {ratings.map((option, index) => (
-          <div className ="inputLine">
+          <div className ="inputLine" key={index}>
               <label>
-                <input type="checkbox" className="filterFormCheckbox" name={travelerRatingOptions[index]} value={travelerRatingOptions[index]}/>{travelerRatingOptions[index]}<RatingBar totalReviews={totalReviews} optionTotal={option.total}/>
+
+                <input type="checkbox" className="travelerRatingFilter" name={travelerRatingOptions[index]} value={travelerRatingOptions[index]} onClick={handleFilterClick}/>
+
+                <span className="optionLabel">{travelerRatingOptions[index]}</span>
+
+                <RatingBar totalReviews={totalReviews} optionTotal={option.total}/>
+                {option.total}
+
               </label>
 
-              {/* <RatingBar/> //make a separte rating bar component, pass down width measurements */}
 
-        <div className="ratingCount">{option.total}</div>
+
+
+
           </div>
         ))}
 
-    </div>
+  </TravelerRatingsForm>
+  </div>
 
   )
 

@@ -8,16 +8,25 @@ app.use(express.json());
 app.use(express.static('client'));
 
 
+
+
+
+
 /* GET REVIEWS */
 app.get('/api/attractions/:attractionid/reviews', (req, res) => {
   var attractionID = req.params.attractionid;
 
+  var params = req.query;
+  console.log('REQ QUERIES-----------------', params);
+
+
+
   getReviews(attractionID, (err, reviews) => {
     if(err) {
-      console.log('serverside error---------------', typeof err);
+      console.log('serverside error---------------',err);
       res.status(404).send(err);
     } else {
-      console.log('serverside success---------------', reviews);
+      console.log('serverside success---------------');
       res.status(200).send(reviews);
     }
   });
@@ -30,10 +39,10 @@ app.get('/api/attractions/:attractionid/reviews/metrics', (req, res) => {
 
   getMetrics(attractionID, (err, metrics) => {
     if(err) {
-      console.log('serverside error---------------', err);
+      console.log('serverside getmetrics error---------------', err);
       res.status(404).send(err);
     } else {
-      console.log('serverside success---------------', metrics);
+      console.log('serverside getmetrics success---------------');
       res.status(200).send(metrics);
     }
   });
@@ -51,7 +60,7 @@ app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
       console.log('serverside error---------------', err);
       res.status(404).send(err);
     } else {
-      console.log('serverside success---------------', keywords);
+      console.log('serverside getkeywords success---------------');
       res.send(keywords);
     }
   });
