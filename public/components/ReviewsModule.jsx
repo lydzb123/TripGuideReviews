@@ -53,41 +53,7 @@ const Filter = styled.div`
 
 
 
-input[type=checkbox] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  padding: 6px;
-  background-clip: content-box;
-  border: 1px solid black;
-  background-color: #e7e6e7;
-  outline: none;
-}
-
-
-input[type=radio] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  padding: 6px;
-  background-clip: content-box;
-  border-radius: 50%;
-  border: 1px solid black;
-  background-color: #e7e6e7;
-  outline: none;
-}
 `;
-
-
-//fix checkbox and radio input css for active
-//toggle select and deselect visuals
-
-//add selected state to popular mention buttons
-//add selected to searchbar
 
 class ReviewsModule extends React.Component {
   constructor(props) {
@@ -166,18 +132,26 @@ class ReviewsModule extends React.Component {
 
 
   handleFilterClick (event) {
-  event.preventDefault();
+  // event.preventDefault();
 
   let key = event.target.className;
   let val = event.target.value;
 
-  console.log(key, val);
   let filter = this.state[key];
-  if(key === "languageFilter") {
+  console.log(filter);
+
+// console.log(event.target.checked);
+  if(event.target.checked === false) {
+    filter = filter.filter(item => item !== val);
+  }
+
+  console.log(filter);
+
+  if(event.target.checked && key === "languageFilter") {
     this.state[key] = val;
     filter = val;
   }
-  else if(filter.includes(val) === false){
+  else if(event.target.checked && filter.includes(val) === false){
       filter.push(val);
   }
 
