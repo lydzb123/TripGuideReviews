@@ -1,8 +1,4 @@
-:root {
-  --dot-size: 40px;
-  --dot-color: white;
-  --dot-fill: #00aa6c;
-}
+
 
 
 hr{
@@ -10,3 +6,4 @@ hr{
   background-color: #ccc;
   border: none;
 }
+

@@ -16,17 +16,15 @@ app.use(express.static('client'));
 app.get('/api/attractions/:attractionid/reviews', (req, res) => {
   var attractionID = req.params.attractionid;
 
-  var params = req.query;
-  console.log('REQ QUERIES-----------------', params);
+  var filters = req.query;
+  console.log('REQ QUERIES-----------------', filters);
 
-
-
-  getReviews(attractionID, (err, reviews) => {
+  getReviews(attractionID, filters, (err, reviews) => {
     if(err) {
       console.log('serverside error---------------',err);
       res.status(404).send(err);
     } else {
-      console.log('serverside success---------------');
+      console.log('serverside success---------------', reviews);
       res.status(200).send(reviews);
     }
   });

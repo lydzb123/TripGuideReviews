@@ -51,8 +51,6 @@ const Filter = styled.div`
     font-size: 13px;
   }
 
-
-
 `;
 
 class ReviewsModule extends React.Component {
@@ -141,32 +139,32 @@ class ReviewsModule extends React.Component {
   console.log(filter);
 
 // console.log(event.target.checked);
-  if(event.target.checked === false) {
-    filter = filter.filter(item => item !== val);
+  if(event.target.checked === false ) {
+    filter = this.state[key].filter(item => item !== val);
+    console.log('filtered resp', filter);
   }
 
-  console.log(filter);
-
-  if(event.target.checked && key === "languageFilter") {
-    this.state[key] = val;
-    filter = val;
-  }
-  else if(event.target.checked && filter.includes(val) === false){
-      filter.push(val);
+  // if(event.target.checked === true && key === "languageFilter") {
+  //   this.state[key] = val;
+  //   filter = val;
+  // }
+  if(event.target.checked === true && filter.includes(val) === false){
+    filter.push(val);
   }
 
   //can only be selected // should be switched to a toggle eventually
 
-  let allFilters =  {
+  let reqQuery =  {
     travelerRating: this.state.travelerRatingFilter,
     travelerType: this.state.travelerTypeFilter,
     timeOfYearFilter: this.state.timeOfYearFilter,
     reviewLanguage: this.state.languageFilter,
-    reviewText: this.state.popularMentionsFilter};
+    reviewText: this.state.popularMentionsFilter
+  };
 
    this.setState({
     [key]: filter,
-    allFilters: allFilters
+    allFilters: reqQuery
     });
 
   };

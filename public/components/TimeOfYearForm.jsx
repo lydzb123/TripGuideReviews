@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const TimeOfYearForm = ({handleFilterClick}) => {
-  const TimeOfYearOptions = ["Mar-May", "Jun-Aug", "Sep-Nov", "Dec-Feb"];
+  const TimeOfYearOptions = ["Mar–May", "Jun-Aug", "Sep–Nov", "Dec-Feb"];
 
   return (
     <div className="filterFormContainer" id="TimeOfYearForm">

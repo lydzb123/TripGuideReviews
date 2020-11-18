@@ -17,7 +17,9 @@ dbConnection.connect(function(err) {
 });
 
 
+const buildFilterQuery = (filters) => {
 
+}
 
 module.exports = {
   getPopularMentions: (attractionID, callback) => {
@@ -70,7 +72,17 @@ module.exports = {
     });
   },
 
-  getReviews: (attractionID, callback) => {
+  getReviews: (attractionID, filters, callback) => {
+
+// {
+//   travelerRating: [ 'Excellent', 'Very Good' ],
+//   travelerType: [ 'Solo' ],
+//   timeOfYearFilter: [ 'Mar–May', 'Jun–Aug', 'Sep–Nov', 'Dec–Feb' ],
+//   reviewLanguage: [ 'allLanguages' ],
+//   reviewText: [ 'allReviews' ] }
+
+
+
     const reviewQ = {
       all: `
       SELECT
@@ -84,20 +96,104 @@ module.exports = {
       users: `SELECT * FROM users u INNER JOIN reviews r WHERE r.attractionID=${attractionID} ORDER BY r.dateOfReview DESC LIMIT 5`
       //chose one query
     }
-    dbConnection.query(`${reviewQ.all}`,
-    (err, results) => {
-      if (err) {
-        console.log('----went into getReviews ERROR statement')
-        throw err;
-      } else {
-        console.log('----went into getReviews SUCCESS statement');
-        // console.log('RESULTS from SQL', results);
-        callback(null, results);
+
+    if (Object.keys(filters).length === 0) {
+      dbConnection.query(`${reviewQ.all}`,
+      (err, results) => {
+        if (err) {
+          console.log('----went into getReviews ERROR statement')
+          throw err;
+        } else {
+          console.log('----went into getReviews SUCCESS statement');
+          // console.log('RESULTS from SQL', results);
+          callback(null, results);
+        }
+      });
+    } else {
+
+    const masterQuery = [];
+
+    // TRAVELER RATING QUERY
+       if (filters.travelerRating) {
+        const ratingOptions = {"Terrible": 1, "Poor": 2, "Average": 3, "Very Good": 4, "Excellent": 5}
+        const ratingArr = filters.travelerRating.map(rating => {
+          return `travelerRating = ${ratingOptions[rating]}`
+        })
+        let ratingQuery = ratingArr.join(' OR ');
+        masterQuery.push(ratingQuery);
+       }
+
+    // TRAVELER TYPE QUERY
+      if (filters.travelerType) {
+        const typeArr = filters.travelerType.map(type => {
+          return `travelerType = "${type}"`
+        })
+        let typeQuery = typeArr.join(' OR ');
+        masterQuery.push(typeQuery);
       }
-    });
+
+    // TIME OF YEAR QUERY
+      if (filters.timeOfYearFilter) {
+        const timeOptions = {["Mar–May"]: [3, 4, 5], ["Jun-Aug"]: [6, 7, 8], ["Sep–Nov"]: [9, 10, 11], ["Dec-Feb"]: [12, 1, 2]};
+        const timeArr = filters.timeOfYearFilter.map(time => {
+          return timeOptions[time].map(month => {
+            return `MONTH(dateOfExperience) = ${month}`
+          })
+        });
+        let timeQuery = timeArr.join(' OR ').split(',').join(' OR ');
+        masterQuery.push(timeQuery);
+      }
+
+
+    // REVIEW LANGUAGE QUERY
+
+      if (filters.reviewLanguage && filters.reviewLanguage[0] !== "allLanguages") {
+        let languageQuery = `reviewLanguage = "${filters.reviewLanguage[0]}"`
+        masterQuery.push(languageQuery);
+      }
+
+      masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+
+      dbConnection.query(`SELECT
+        r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+        r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
+      FROM reviews r
+      INNER JOIN users u
+      ${masterQueryString}
+      ORDER BY dateOfReview DESC
+      LIMIT 5
+      `,
+      (err, results) => {
+        if (err) {
+          console.log('----went into getQUERIESReviews ERROR statement')
+          throw err;
+        } else {
+          console.log('----went into getQUERIEDReviews SUCCESS statement');
+          // console.log('RESULTS from SQL', results);
+          callback(null, results);
+        }
+      });
+
+    }
+  }
   }
 
-}
+  // SELECT * FROM reviews WHERE travelerType = "Solo" OR travelerType = "Friends" AND travelerRating = 4 OR travelerRating = 3 OR travelerRating = 2;
+
+    // if (filters.timeOfYearFilter)
+
+    // }
+
+
+// key = "Solo"
+// {
+//   travelerRating: [ 'Excellent', 'Very Good' ],
+//   travelerType: [ 'Solo' ],
+//   timeOfYearFilter: [ 'Mar–May', 'Jun–Aug', 'Sep–Nov', 'Dec–Feb' ],
+//   reviewLanguage: [ 'allLanguages' ],
+//   reviewText: [ 'allReviews' ] }
+
+
 
 
 // dateOfExperience AS DatePartString (month, '2017/08/25') AS

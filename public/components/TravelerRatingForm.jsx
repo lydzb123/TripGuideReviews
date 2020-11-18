@@ -8,17 +8,20 @@ const TravelerRatingsForm = styled.div`
 width: 100%;
 
 
+
 label {
   display: flex;
   align-items: flex-start;
 
+
   p {
-    margin-top: 8px;
+    margin-top: 12px;
+
   }
 
   .optionLabel {
   width: 80px;
-  margin-left: 34px;
+  margin-left: 24px;
   margin-top: 10px;
 
   }
@@ -33,8 +36,8 @@ label {
   input[type=checkbox]:before {
       content: "";
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       top: 0;
       left: 0;
       border-radius: 3px;
@@ -45,8 +48,8 @@ label {
   input[type=checkbox]:checked:before {
       content: "";
       display:  block;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       top: 0;
       left: 0;
       background-color: black;
@@ -55,8 +58,8 @@ label {
   input[type=checkbox]:checked:after {
       content: "";
       display: inline-flex;
-      width: 5px;
-      height: 10px;
+      width: 4px;
+      height: 8px;
       border: solid white;
       border-width: 0 3px 3px 0;
       -webkit-transform: rotate(45deg);

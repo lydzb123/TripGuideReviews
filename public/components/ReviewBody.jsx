@@ -1,5 +1,5 @@
-import React from 'react';
-import ReviewRatingMeter from './ReviewRatingMeter.jsx'
+import React, {useState} from 'react';
+import ReviewRatingMeter from './ReviewRatingMeter.jsx';
 import styled from 'styled-components';
 
 
@@ -31,29 +31,52 @@ h5 {
 
 .bold {
   font-weight: 400;
-
 }
 
 p {
   margin-top: -12px;
-  font-size: 16px;
-  font-family: arial, sans-serif;
+  font-size: 14px;
   line-height: 20px;
   padding: 0 20px;
-}`;
+}
+
+
+.link{
+  font-size: 14px;
+  color: #8c8c8c;
+}
+`;
 
 
 const ReviewBody = ({rating, title, text, photos, experienceDate})=> {
 
 
+const [readMore, setReadMore] = useState(false);
+
   var number = rating;
+
+  const content= text.slice(0,277);
+  const extraContent= (
+  <div>
+    <p className="extra-content">
+      {text}
+    </p>
+  </div>
+  )
+  const linkName = readMore ? 'Read Less ' :'Read More >> ';
+
   return(
     <div className="space">
     <ReviewWrapper>
       <img src="https://placeimg.com/1000/200/arch"/>
       <ReviewRatingMeter rating={rating}/>
         <h4>{title}</h4>
-        <p>{text}</p>
+        <p>{content}</p>
+
+        <a className="read-more-link" onClick={()=>{setReadMore(!readMore)}}><p class="linkName">{linkName}</p></a>
+      {readMore && extraContent}
+
+
         <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
     </ReviewWrapper>
     </div>
@@ -63,3 +86,4 @@ const ReviewBody = ({rating, title, text, photos, experienceDate})=> {
 
 export default ReviewBody;
 
+// https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-up-24.png

@@ -9,7 +9,7 @@ width: 100px;
 background-color: #e0e0e0;
 border-radius: 2px;
 padding: 0;
-margin: 7px 4px 0 4px;
+margin: 6px 4px 0 2px;
 `;
 
 const RatingBarInside = styled.div`

@@ -8,6 +8,9 @@ const More = styled.div`
 
 
 
+
+
+
 const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
   const languageOptions = ["All Languages", "English", "Chinese(Trad.)", "Japanese"]; //dynamically render this? get all languages?
 
@@ -21,7 +24,7 @@ const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
       <h2>Language</h2>
       <div className ="inputLine">
         <label>
-          <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
+          <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick} checked/>All Languages ({totalReviews})
         </label>
       </div>
 
@@ -36,7 +39,7 @@ const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
     { status && (<Modal closeModal={() => setStatus(false)}>
       <div className ="inputLine">
           <label>
-            <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
+            <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick} checked="checked"/>All Languages ({totalReviews})
           </label>
         </div>
         {languages.map((option, i) => (

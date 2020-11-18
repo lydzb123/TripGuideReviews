@@ -40,9 +40,7 @@ button:focus {
 }
 
 button:active {
-  background-color: black;
   color: white;
-  outline: none;
 }
 `;
 
