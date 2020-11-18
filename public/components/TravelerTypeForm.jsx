@@ -64,10 +64,10 @@ const TravelerTypeForm = ({handleFilterClick}) => {
       <h2>Traveler Type</h2>
 
         {travelerTypeOptions.map((option, i) => (
-          <Checkbox>
+          <Checkbox key={i}>
           <div className ="inputLine" key={i}>
               <label>
-                <input type="checkbox" className="travelerTypeFilter" name={option} value={option} onClick={handleFilterClick}/><p>{option}</p>
+                <input type="checkbox" className="travelerTypeFilter" name={option} value={option} onClick={handleFilterClick} key={i}/><p>{option}</p>
               </label>
           </div>
           </Checkbox>

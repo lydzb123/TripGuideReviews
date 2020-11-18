@@ -20,27 +20,6 @@ button {
   margin: 8px 0 0 8px;
   x white;
   outline: none;
-  background-color: white;
-}
-
-.allReviewsButton {
-
-}
-
-button:hover {
-  background-color: #D3D3D3;
-  outline: none;
-
-}
-
-button:focus {
-  background-color: black;
-  color: white;
-  outline: none;
-}
-
-button:active {
-  color: white;
 }
 `;
 
@@ -51,25 +30,7 @@ padding: 12px;
 
 
 
-const PopularMentionsForm = ({keywords, handleFilterClick}) => {
-
-  const [words, setWords] = useState({});
-
-  const addWord = (e) => {
-    const newObj = {...words};
-    let word = e.target.value;
-    if(newObj[word]) {
-      newObj[word]  = "white";
-    } else {
-      newObj[word] = "black";
-      }
-
-    setWords({
-    ...newObj
-    });
-
-  };
-
+const PopularMentionsForm = ({keywords, handleFilterClick, onPopularClick, isSelected}) => {
 
   return (
      <FilterFormContainer>
@@ -84,10 +45,10 @@ const PopularMentionsForm = ({keywords, handleFilterClick}) => {
             {keywords.map((word, i) => (
                 <button className="popularMentionsFilter" value={word}
                   onClick={(e) => {
-                    handleFilterClick(e);
-                    addWord(e);
+                    handleFilterClick(e, word);
+                    onPopularClick(e);
                   }}
-                  style={{backgroundColor: words[word]}}
+                  style={{backgroundColor: isSelected[word]? "black" : "white", color: !isSelected[word]? "black" : "white"}}
                   key={i}>
                   {word}
                 </button>

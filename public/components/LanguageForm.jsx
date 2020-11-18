@@ -24,7 +24,7 @@ const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
       <h2>Language</h2>
       <div className ="inputLine">
         <label>
-          <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick} checked/>All Languages ({totalReviews})
+          <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
         </label>
       </div>
 

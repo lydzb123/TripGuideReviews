@@ -20,10 +20,12 @@ const SearchBar = ({selectedPopularMentions, handleSearchChange, handleSearchSub
 
   let inputs = selectedPopularMentions+ query;
   return (
-    <SearchBarInput>
+    <SearchBarInput onSubmit={handleSearchSubmit}>
+      <form>
           <label>
-            <input type="text" name="search" value={inputs} onChange={handleSearchChange}/>
+            <input type="text" name="search" value={inputs} onChange={handleSearchChange }/>
           </label>
+        </form>
     </SearchBarInput>
   )
 

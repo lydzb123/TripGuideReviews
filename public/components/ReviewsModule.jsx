@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import TravelerRatingForm from './TravelerRatingForm.jsx';
-import TravelerTypeForm from './TravelerTypeForm.jsx';
-import TimeOfYearForm from './TimeOfYearForm.jsx';
-import LanguageForm from './LanguageForm.jsx';
-import PopularMentionsForm from './PopularMentionsForm.jsx';
+import AllForms from './AllForms.jsx';
 import SearchBar from './SearchBar.jsx';
 import ReviewsList from './ReviewsList.jsx';
 import axios from 'axios';
@@ -26,31 +22,6 @@ const ReviewsModuleWrapper = styled.div`
   h1 {
     margin-left: 22px;
   }
-`
-const FormWrapper = styled.div`
-  background-color: white;
-
-  input {
-    padding: 12px 0 0 0;
-    transition: background-color 0.5s ease-out;
-  }
-
-  .filterForm {
-    display: flex;
-    justify-content: space-between
-    width: 100%;
-  }
-  `
-const Filter = styled.div`
-  font-size: 13px;
-  font-family: arial;
-  padding: 8px 8px;
-
-
-  h2 {
-    font-size: 13px;
-  }
-
 `;
 
 class ReviewsModule extends React.Component {
@@ -129,7 +100,7 @@ class ReviewsModule extends React.Component {
   }
 
 
-  handleFilterClick (event) {
+  handleFilterClick (event, word) {
   // event.preventDefault();
 
   let key = event.target.className;
@@ -184,11 +155,12 @@ class ReviewsModule extends React.Component {
   //onkeypress can detect enter
   //onchange detects everything but is not submitting form on enter
 
-  handleSearchSubmit (e) {
-    if(e.key === "Enter"){
-      alert("Enter was just pressed.");
+  handleSearchSubmit (event) {
+    if(event.key === "Enter"){
+      event.preventDefault()
+      const formData = new FormData(event.target)
+      console.log(formData);
     }
-    return false;
   };
 
 
@@ -222,24 +194,11 @@ class ReviewsModule extends React.Component {
 
           <div className="filterReviews">
             <div className ="mainFilters">
-            <h1>Reviews</h1>
-            <hr />
-
-              <FormWrapper>
-                <form className="filterForm">
-                  <Filter><TravelerRatingForm ratings={this.state.totalRatings} totalReviews={this.state.totalReviews} handleFilterClick={this.handleFilterClick}/></Filter>
-                  <Filter><TravelerTypeForm handleFilterClick={this.handleFilterClick}/></Filter>
-                  <Filter><TimeOfYearForm handleFilterClick={this.handleFilterClick}/></Filter>
-                  <Filter><LanguageForm languages={this.state.totalLanguages} totalReviews={this.state.totalReviews} handleFilterClick={this.handleFilterClick}/></Filter>
-                </form>
-              </FormWrapper>
-
+              <h1>Reviews</h1>
+              <hr />
+              <AllForms ratings={this.state.totalRatings} totalReviews={this.state.totalReviews} handleFilterClick={this.handleFilterClick} languages={this.state.totalLanguages} keywords={this.state.popularMentions}/>
             </div>
-            <PopularMentionsForm keywords={this.state.popularMentions} handleFilterClick={this.handleFilterClick}/>
-
           </div>
-
-
 
           <div className="searchBar">
             <SearchBar handleSearchChange={this.handleSearchChange} selectedPopularMentions={this.state.popularMentionsFilter} handleSearchSubmit={this.handleSearchSubmit} query={this.state.query}/>
