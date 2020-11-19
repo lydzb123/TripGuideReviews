@@ -40,6 +40,11 @@ p {
   padding: 0 20px;
 }
 
+.photo {
+  width: 100%;
+  height: 20%;
+
+}
 
 .link{
   font-size: 14px;
@@ -47,13 +52,23 @@ p {
 }
 `;
 
+const PhotoBar = styled.div`
+background: url(${props=> props.photo});
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
 
-const ReviewBody = ({rating, title, text, photos, experienceDate})=> {
+width: 100%;
+height: 200px;
+`;
 
+
+const ReviewBody = ({rating, title, text, photos, experienceDate, keywords})=> {
 
 const [readMore, setReadMore] = useState(false);
 
   var number = rating;
+
 
   const content= text.slice(0,277);
   const extraContent= (
@@ -63,19 +78,16 @@ const [readMore, setReadMore] = useState(false);
     </p>
   </div>
   )
+
   const linkName = readMore ? 'Read Less ' :'Read More >> ';
 
   return(
     <div className="space">
     <ReviewWrapper>
-      <img src="https://placeimg.com/1000/200/arch"/>
+      <PhotoBar photo={photos}/>
       <ReviewRatingMeter rating={rating}/>
         <h4>{title}</h4>
-        <p>{content}</p>
-
-        <a className="read-more-link" onClick={()=>{setReadMore(!readMore)}}><p class="linkName">{linkName}</p></a>
-      {readMore && extraContent}
-
+        <p>{text}</p>
 
         <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
     </ReviewWrapper>

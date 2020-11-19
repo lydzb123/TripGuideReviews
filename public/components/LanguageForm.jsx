@@ -24,14 +24,14 @@ const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
       <h2>Language</h2>
       <div className ="inputLine">
         <label>
-          <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
+          <input type="radio" className="reviewLanguage" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
         </label>
       </div>
 
       {languages.slice(0,3).map((option, i) => (
         <div className ="inputLine" key={i}>
             <label>
-              <input type="radio" className="languageFilter" name="languages" value={option.language} onClick={handleFilterClick}/>{option.language} ({option.total})
+              <input type="radio" className="reviewLanguage" name="languages" value={option.language} onClick={handleFilterClick}/>{option.language} ({option.total})
             </label>
         </div>
       ))}
@@ -39,13 +39,13 @@ const LanguageForm = ({languages, totalReviews, handleFilterClick}) => {
     { status && (<Modal closeModal={() => setStatus(false)}>
       <div className ="inputLine">
           <label>
-            <input type="radio" className="languageFilter" name="languages" value="allLanguages" onClick={handleFilterClick} checked="checked"/>All Languages ({totalReviews})
+            <input type="radio" className="reviewLanguage" name="languages" value="allLanguages" onClick={handleFilterClick}/>All Languages ({totalReviews})
           </label>
         </div>
         {languages.map((option, i) => (
           <div className ="inputLine" key={i}>
               <label>
-                <input type="radio" className="languageFilter" name="languages" value={option.language} onClick={handleFilterClick}/>{option.language} ({option.total})
+                <input type="radio" className="reviewLanguage" name="languages" value={option.language} onClick={handleFilterClick}/>{option.language} ({option.total})
               </label>
           </div>))}
       </Modal>)}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-// import sinon from 'sinon';
+import sinon from 'sinon';
 
 jest.useFakeTimers();
 
@@ -8,6 +8,8 @@ jest.useFakeTimers();
 
 // Components
 import ReviewsModule from './ReviewsModule.jsx';
+import AllForms from './AllForms.jsx';
+
 
 // function setup() {
 //   const props = {
@@ -23,67 +25,68 @@ import ReviewsModule from './ReviewsModule.jsx';
 //     expect(wrapper.find('img').exists()).toBe(true);
 //   });
 // });
+// describe('Testing ReviewsModule: Clicking Filter Inputs', () => {
 
-describe('Testing ReviewsModule: Clicking Filter Inputs', () => {
-  it('should add the clicked value to the correlating state filter', () => {
-    // expect(appController.add(2, 2)).toBe(4);
+  function setup() {
+    const wrapper = shallow(<ReviewsModule/>);
+    return {wrapper};
+  }
 
-    // labelOn="On" labelOff="Off"
-      // Render a checkbox with label in the document
-  const app = shallow(<ReviewsModule/>);
-
-
-  const input = [
-    { id: 1, url: "https://www.url1.dev" },
-    { id: 2, url: "https://www.url2.dev" },
-    { id: 3, url: "https://www.link3.dev" }
-  ];
-
-  const output = [{ id: 3, url: "https://www.link3.dev" }];
-
-  expect(filterByTerm(input, "link")).toEqual(output);
-
-
-  const mockFn = jest.fn();
-  mockFn();
-  expect(mockFn).toHaveBeenCalled();
-
-
-});
-
-
-
-
-
-  expect(checkbox.text()).toEqual('Off');
-
-  checkbox.find('input').simulate('change');
-
-  expect(checkbox.text()).toEqual('On');
-
-
-
-
-  });
-
-  it('should send a GET request for reviews on click select', ()=> {
-
-  });
-
-
-  it('should send a GET request for reviews on click deselect', ()=> {
-
-  });
-
-  it('should send an allfilters query object with keys for every filter', ()=> {
-
-  });
-
-  it('should not get back reviews that do not match the filters', ()=> {
-
+describe('ReviewsModule Component: ', () => {
+  it('renders form components', () => {
+  const {wrapper} = setup();
+  expect(wrapper.find(AllForms).exists()).toBe(true);
   });
 
 });
+
+
+// it('renders an `.icon-star`', () => {
+//   const wrapper = shallow(<MyComponent />);
+//   expect(wrapper.find('.icon-star')).to.have.lengthOf(1);
+// });
+
+
+//   it('should send a GET request for reviews on click select', ()=> {
+
+//   });
+
+// });
+
+
+
+// it('should add the clicked value to the correlating state filter', () => {
+
+
+//   expect(checkbox.text()).toEqual('Off');
+
+//   checkbox.find('input').simulate('change');
+
+//   expect(checkbox.text()).toEqual('On');
+
+
+
+
+//   });
+
+//   it('should send a GET request for reviews on click select', ()=> {
+
+//   });
+
+
+//   it('should send a GET request for reviews on click deselect', ()=> {
+
+//   });
+
+//   it('should send an allfilters query object with keys for every filter', ()=> {
+
+//   });
+
+//   it('should not get back reviews that do not match the filters', ()=> {
+
+//   });
+
+// });
 
 //when i click an input type checkbox
 //it should add the event.target.value to the correlating state filter
@@ -101,7 +104,4 @@ describe('Testing ReviewsModule: Clicking Filter Inputs', () => {
 
 //when i deselect an input checkbox
   //it should remove the event.target.value from the associated filter state
-
-
-
 

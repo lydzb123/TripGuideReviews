@@ -63,6 +63,8 @@ module.exports = {
       travelerRatings: `SELECT travelerRating AS rating, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY travelerRating`,
       languages: `SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=${attractionID} GROUP BY reviewLanguage`,
     }
+
+
     dbConnection.query(`${metricQ.totalReviews}; ${metricQ.travelerRatings}; ${metricQ.languages}`, (err, result) => {
       if (err) {
         callback(err);
@@ -86,14 +88,14 @@ module.exports = {
     const reviewQ = {
       all: `
       SELECT
-        r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+      r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
         r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
       FROM reviews r
       INNER JOIN users u
+      ON r.userID = u.userID
       WHERE attractionID=${attractionID}
       ORDER BY dateOfReview DESC
       LIMIT 5`,
-      users: `SELECT * FROM users u INNER JOIN reviews r WHERE r.attractionID=${attractionID} ORDER BY r.dateOfReview DESC LIMIT 5`
       //chose one query
     }
 
@@ -119,7 +121,7 @@ module.exports = {
         const ratingArr = filters.travelerRating.map(rating => {
           return `travelerRating = ${ratingOptions[rating]}`
         })
-        let ratingQuery = ratingArr.join(' OR ');
+        let ratingQuery = `(${ratingArr.join(' OR ')})`
         masterQuery.push(ratingQuery);
        }
 
@@ -128,7 +130,7 @@ module.exports = {
         const typeArr = filters.travelerType.map(type => {
           return `travelerType = "${type}"`
         })
-        let typeQuery = typeArr.join(' OR ');
+        let typeQuery = `(${typeArr.join(' OR ')})`
         masterQuery.push(typeQuery);
       }
 
@@ -140,25 +142,49 @@ module.exports = {
             return `MONTH(dateOfExperience) = ${month}`
           })
         });
-        let timeQuery = timeArr.join(' OR ').split(',').join(' OR ');
+        let timeQuery = `(${timeArr.join(' OR ').split(',').join(' OR ')})`
         masterQuery.push(timeQuery);
       }
 
 
-    // REVIEW LANGUAGE QUERY
-
-      if (filters.reviewLanguage && filters.reviewLanguage[0] !== "allLanguages") {
-        let languageQuery = `reviewLanguage = "${filters.reviewLanguage[0]}"`
-        masterQuery.push(languageQuery);
+      // REVIEW TEXT POPULAR MENTIONS && KEYWORDS
+      if (filters.reviewText) {
+        const textArr = filters.reviewText.map(text => {
+          return `r.reviewText LIKE "%${text}%"`
+        })
+        let textQuery = textArr.join(' AND ');
+        // console.log('XxxxxxxxxxxxxxxQUERYYYYYY', filters.reviewText);
+        masterQuery.push(textQuery);
       }
 
-      masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+         // REVIEW LANGUAGE QUERY
+         if (filters.reviewLanguage && filters.reviewLanguage[0] !== "allLanguages") {
+          let languageQuery = `r.reviewLanguage = "${filters.reviewLanguage[0]}"`
+          masterQuery.push(languageQuery);
+          console.log('inside language query', filters.reviewLanguage);
+        }
+
+        //TypeError: Cannot read property '0' of undefined
+        //case of only 1 filter
+
+        var masterQueryString = "";
+        if( Object.keys(filters).length === 1 && filters.reviewLanguage){
+          masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+          if (filters.reviewLanguage[0] === "allLanguages") {
+          masterQueryString = `WHERE attractionID=${attractionID}`
+          }
+        }else {
+          masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+        }
+
+        console.log('MASTER Q STRING------------', masterQueryString);
 
       dbConnection.query(`SELECT
-        r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+        r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
         r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
       FROM reviews r
       INNER JOIN users u
+      ON r.userID = u.userID
       ${masterQueryString}
       ORDER BY dateOfReview DESC
       LIMIT 5
@@ -177,6 +203,22 @@ module.exports = {
     }
   }
   }
+
+
+//count of languages for 1 attraction
+//   SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=1 GROUP BY reviewLanguage
+
+// //all reviews with filters for 1 attraction
+//   SELECT
+//   r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+//   r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
+//   FROM reviews r
+//   INNER JOIN users u
+//   ON r.userID = u.userID
+//   WHERE attractionID=1 AND r.reviewLanguage = "Danish"
+//   ORDER BY dateOfReview DESC
+//   LIMIT 5
+
 
   // SELECT * FROM reviews WHERE travelerType = "Solo" OR travelerType = "Friends" AND travelerRating = 4 OR travelerRating = 3 OR travelerRating = 2;
 
@@ -200,4 +242,13 @@ module.exports = {
 // SELECT DATENAME(month, '2017/08/25') AS DatePartString;
 // SELECT DATENAME(yy, '2017/08/25') AS DatePartString;
 
+
+// SELECT
+// r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
+// r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
+// FROM reviews r
+// INNER JOIN users u
+// WHERE attractionID=1 AND r.reviewLanguage = "English" AND (MONTH(dateOfExperience) = 12 OR MONTH(dateOfExperience) = 1 OR MONTH(dateOfExperience) = 2)
+// ORDER BY dateOfReview DESC
+// LIMIT 5
 

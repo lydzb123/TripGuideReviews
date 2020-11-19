@@ -67,7 +67,7 @@ const TravelerTypeForm = ({handleFilterClick}) => {
           <Checkbox key={i}>
           <div className ="inputLine" key={i}>
               <label>
-                <input type="checkbox" className="travelerTypeFilter" name={option} value={option} onClick={handleFilterClick} key={i}/><p>{option}</p>
+                <input type="checkbox" className="travelerType" name={option} value={option} onClick={handleFilterClick} key={i}/><p>{option}</p>
               </label>
           </div>
           </Checkbox>

@@ -28,15 +28,34 @@ class ReviewsModule extends React.Component {
   constructor(props) {
     super(props);
 
+
+
+
+  // travelerRating: this.state.travelerRatingFilter,
+  //       travelerType: this.state.travelerTypeFilter,
+  //       timeOfYearFilter: this.state.timeOfYearFilter,
+  //       reviewLanguage: this.state.languageFilter,
+  //       reviewText: this.state.popularMentionsFilter,
+  //       [key]: selected
+
+
+
+
     this.state = {
       attractionID: 1,
-      travelerRatingFilter: [],
-      travelerTypeFilter: [],
+      travelerRating: [],
+      travelerType: [],
       timeOfYearFilter: [],
-      languageFilter: ["allLanguages"],
-      popularMentionsFilter: [],
+      reviewLanguage: ["allLanguages"],
+      reviewText: [],
       query: "",
-      allFilters: {},
+      allFilters: {
+      travelerRating: [],
+      travelerType: [],
+      timeOfYearFilter: [],
+      reviewLanguage: [],
+      reviewText: []
+      },
 
       totalReviews: [],
       totalRatings: [],
@@ -55,6 +74,7 @@ class ReviewsModule extends React.Component {
 
   //when combining components, i will need to put the attractionID in state
 
+  //if statement, if the filters object exists
   getReviews(attractionID, filters) {
     axios.get(`/api/attractions/${attractionID}/reviews`,
     {params: filters})
@@ -106,39 +126,41 @@ class ReviewsModule extends React.Component {
   let key = event.target.className;
   let val = event.target.value;
 
-  let filter = this.state[key];
-  console.log(filter);
+  var selected = this.state[key];
 
-// console.log(event.target.checked);
-  if(event.target.checked === false ) {
-    filter = this.state[key].filter(item => item !== val);
-    console.log('filtered resp', filter);
-  }
 
-  // if(event.target.checked === true && key === "languageFilter") {
-  //   this.state[key] = val;
-  //   filter = val;
-  // }
-  if(event.target.checked === true && filter.includes(val) === false){
-    filter.push(val);
-  }
-
-  //can only be selected // should be switched to a toggle eventually
-
-  let reqQuery =  {
-    travelerRating: this.state.travelerRatingFilter,
-    travelerType: this.state.travelerTypeFilter,
-    timeOfYearFilter: this.state.timeOfYearFilter,
-    reviewLanguage: this.state.languageFilter,
-    reviewText: this.state.popularMentionsFilter
+  //language filter
+  if(event.target.checked === true && key === "reviewLanguage") {
+    selected[0] = val;
   };
 
-   this.setState({
-    [key]: filter,
-    allFilters: reqQuery
-    });
+  //if i check my target
+  if((event.target.checked === true && selected.includes(val) === false)
+  || key === "reviewText" && !selected.includes(val)){
+    selected.push(val);
+  } else if (key === "reviewText" && selected.includes(val)) {
+    selected = selected.filter(item => item !== val);
+  }
 
+   //console.log(event.target.checked);
+   if(event.target.checked === false ) {
+    selected = selected.filter(item => item !== val);
+    console.log('inside selected', selected);
+  }
+
+  let all = this.state.allFilters;
+  all[key] = selected;
+
+  this.setState({
+    [key]: selected,
+    allFilters: all
+  });
+
+  this.getReviews(this.state.attractionID, this.state.allFilters);
   };
+
+
+
 
 
   handleSearchChange (e) {
@@ -152,9 +174,6 @@ class ReviewsModule extends React.Component {
     }
   }
 
-  //onkeypress can detect enter
-  //onchange detects everything but is not submitting form on enter
-
   handleSearchSubmit (event) {
     if(event.key === "Enter"){
       event.preventDefault()
@@ -166,22 +185,13 @@ class ReviewsModule extends React.Component {
 
 
   componentDidMount() {
-    this.setState ({
-      allFilters: {}
-    });
-
     this.getMetrics(this.state.attractionID);
     this.getReviews(this.state.attractionID);
     this.getPopularMentions(this.state.attractionID);
   }
 
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.allFilters !== this.state.allFilters) {
-      this.getReviews(this.state.attractionID, this.state.allFilters);
-      console.log('component did update');
-    }
-  }
+
 
 
 
@@ -201,11 +211,11 @@ class ReviewsModule extends React.Component {
           </div>
 
           <div className="searchBar">
-            <SearchBar handleSearchChange={this.handleSearchChange} selectedPopularMentions={this.state.popularMentionsFilter} handleSearchSubmit={this.handleSearchSubmit} query={this.state.query}/>
+            <SearchBar handleSearchChange={this.handleSearchChange} selectedPopularMentions={this.state.reviewText} handleSearchSubmit={this.handleSearchSubmit} query={this.state.query}/>
           </div>
 
            <div className="reviewsList">
-             <ReviewsList reviewsList={this.state.reviewsList}/>
+             <ReviewsList reviewsList={this.state.reviewsList} keywords={this.state.reviewText}/>
           </div>
 
         </div>

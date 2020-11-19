@@ -32,18 +32,20 @@ padding: 12px;
 
 const PopularMentionsForm = ({keywords, handleFilterClick, onPopularClick, isSelected}) => {
 
+
+
   return (
      <FilterFormContainer>
         <label>Popular Mentions</label>
           <ButtonsContainer>
-          <button className="popularMentionsFilter" value="allReviews"
+          <button className="reviewText" value="allReviews"
             onClick={(e) => {
               handleFilterClick(e);
             }}>
           All Reviews
           </button>
             {keywords.map((word, i) => (
-                <button className="popularMentionsFilter" value={word}
+                <button className="reviewText" value={word}
                   onClick={(e) => {
                     handleFilterClick(e, word);
                     onPopularClick(e);

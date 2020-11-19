@@ -9,14 +9,14 @@ background-color: white;
 `;
 
 
-const ReviewsList = ({reviewsList}) => {
+const ReviewsList = ({reviewsList, keywords}) => {
   return (
     <div>
       <div>
         {reviewsList.map((review, i) => (
           <ReviewEntry key={i}>
             <UserHeader name={review.username} profilePhoto={review.profilePhoto} reviewDate={review.dateOfReview} location={review.userLocation} contributions={review.contributions}/>
-            <ReviewBody rating={review.travelerRating} title={review.title} text={review.reviewText} experienceDate={review.dateOfExperience}/>
+            <ReviewBody photos={review.photos} rating={review.travelerRating} title={review.title} text={review.reviewText} experienceDate={review.dateOfExperience} keywords={keywords}/>
           </ReviewEntry>
         ))}
       </div>

@@ -101,7 +101,7 @@ const TravelerRatingForm = ({ratings, totalReviews, handleFilterClick}) => {
         {ratings.map((option, index) => (
           <div className ="inputLine" key={index}>
               <label>
-                <input type="checkbox" className="travelerRatingFilter" name={travelerRatingOptions[index]} value={travelerRatingOptions[index]} onClick={(e)=> {handleFilterClick(e)}}/>
+                <input type="checkbox" className="travelerRating" name={travelerRatingOptions[index]} value={travelerRatingOptions[index]} onClick={(e)=> {handleFilterClick(e)}}/>
 
                 <span className="optionLabel">{travelerRatingOptions[index]}</span>
 
