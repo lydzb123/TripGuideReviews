@@ -1,57 +1,91 @@
 import React from 'react';
 import styled from 'styled-components';
-import TravelerRatingForm from './TravelerRatingForm.jsx';
-import TravelerTypeForm from './TravelerTypeForm.jsx';
-import TimeOfYearForm from './TimeOfYearForm.jsx';
-import LanguageForm from './LanguageForm.jsx';
-import PopularMentionsForm from './PopularMentionsForm.jsx';
-import ReviewsList from './ReviewsList.jsx'
+import AllForms from './AllForms.jsx';
+import SearchBar from './SearchBar.jsx';
+import ReviewsList from './ReviewsList.jsx';
 import axios from 'axios';
 
-const FormWrapper = styled.div`
+const ReviewsModuleWrapper = styled.div`
+  font-family: 'Poppins', sans-serif;
   display: flex;
-  justify-content: space-around;
-  background-color: red;
-  width: 100%;
-  `
+  justify-content: center;
+  width: 600px;
+  margin: 0 auto;
+  margin-top: -10px;
 
-const Filter = styled.div`
-  background-color: green;
-  padding: 4px;
-  display: inline-flex;
-  margin: 0px 10px;
+  .mainFilters{
+    background-color: white;
+    margin-top: 0;
+    padding-top: 12px;
+  }
 
+  h1 {
+    margin-left: 22px;
+  }
 `;
+
 class ReviewsModule extends React.Component {
   constructor(props) {
     super(props);
+
+
+
+
+  // travelerRating: this.state.travelerRatingFilter,
+  //       travelerType: this.state.travelerTypeFilter,
+  //       timeOfYearFilter: this.state.timeOfYearFilter,
+  //       reviewLanguage: this.state.languageFilter,
+  //       reviewText: this.state.popularMentionsFilter,
+  //       [key]: selected
+
+
+
+
     this.state = {
-      travelerRatingFilter: [],
-      travelerTypeFilter: [],
+      attractionID: 1,
+      travelerRating: [],
+      travelerType: [],
       timeOfYearFilter: [],
-      languageFilter: [],
-      popularMentionsFilter: [],
+      reviewLanguage: ["allLanguages"],
+      reviewText: [],
+      query: "",
+      allFilters: {
+      travelerRating: [],
+      travelerType: [],
+      timeOfYearFilter: [],
+      reviewLanguage: [],
+      reviewText: []
+      },
 
       totalReviews: [],
       totalRatings: [],
       totalLanguages: [],
-      reviewsList: []
+      reviewsList: [],
+      popularMentions: []
     };
-    //put any binded functions here
+
     this.getReviews = this.getReviews.bind(this);
+    this.getMetrics = this.getMetrics.bind(this);
+    this.getPopularMentions = this.getPopularMentions.bind(this);
+    this.handleFilterClick = this.handleFilterClick.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind()
   }
 
-  //when combining components, i will need to find the attractionID
+  //when combining components, i will need to put the attractionID in state
 
-  getReviews(attractionID) {
-    axios.get(`/api/attractions/${attractionID}/reviews`)
+  //if statement, if the filters object exists
+  getReviews(attractionID, filters) {
+    axios.get(`/api/attractions/${attractionID}/reviews`,
+    {params: filters})
     .then((res) => {
       this.setState({
         reviewsList: res.data
       });
     })
     .catch((err) => {
-      console.log('unncessucful get')
+      throw err;
+      console.log('unsuccessful get reviews')
     })
   }
 
@@ -64,64 +98,129 @@ class ReviewsModule extends React.Component {
         totalRatings: res.data[1],
         totalLanguages: res.data[2]
       });
-      console.log(this.state.totalRatings);
     })
     .catch((err) => {
-      console.log('unncessucful get')
+      throw err;
+      console.log('unsuccessful get metrics')
+    })
+  }
+
+  getPopularMentions(attractionID)
+  {
+    axios.get(`/api/attractions/${attractionID}/reviews/keywords`)
+    .then((res) => {
+      this.setState({
+        popularMentions: res.data.keywords
+      });
+    })
+    .catch((err) => {
+      throw err;
+      console.log('unsuccessful get popularmentions')
     })
   }
 
 
+  handleFilterClick (event, word) {
+  // event.preventDefault();
+
+  let key = event.target.className;
+  let val = event.target.value;
+
+  var selected = this.state[key];
+
+
+  //language filter
+  if(event.target.checked === true && key === "reviewLanguage") {
+    selected[0] = val;
+  };
+
+  //if i check my target
+  if((event.target.checked === true && selected.includes(val) === false)
+  || key === "reviewText" && !selected.includes(val)){
+    selected.push(val);
+  } else if (key === "reviewText" && selected.includes(val)) {
+    selected = selected.filter(item => item !== val);
+  }
+
+   //console.log(event.target.checked);
+   if(event.target.checked === false ) {
+    selected = selected.filter(item => item !== val);
+    console.log('inside selected', selected);
+  }
+
+  let all = this.state.allFilters;
+  all[key] = selected;
+
+  this.setState({
+    [key]: selected,
+    allFilters: all
+  });
+
+  this.getReviews(this.state.attractionID, this.state.allFilters);
+  };
+
+
+
+
+
+  handleSearchChange (e) {
+    event.preventDefault();
+    if(e.key === "Enter"){
+      alert("Enter was just pressed.");
+    } else {
+      this.setState({
+        query: [e.target.value]
+      });
+    }
+  }
+
+  handleSearchSubmit (event) {
+    if(event.key === "Enter"){
+      event.preventDefault()
+      const formData = new FormData(event.target)
+      console.log(formData);
+    }
+  };
 
 
 
   componentDidMount() {
-    var attractionID = 1;
-    this.getMetrics(attractionID);
-    this.getReviews(attractionID);
-
-
-
-
+    this.getMetrics(this.state.attractionID);
+    this.getReviews(this.state.attractionID);
+    this.getPopularMentions(this.state.attractionID);
   }
+
+
+
+
+
+
 
   render() {
 
     return (
-      <div>
+      <ReviewsModuleWrapper>
         <div className="filtersAndReviewsList">
-          <h1>Reviews</h1>
 
           <div className="filterReviews">
-
             <div className ="mainFilters">
-              <FormWrapper>
-              <form className="filterForm">
-              <Filter><TravelerRatingForm ratings={this.state.totalRatings}/></Filter>
-              <Filter><TravelerTypeForm/></Filter>
-              <Filter><TimeOfYearForm/></Filter>
-              <Filter><LanguageForm/></Filter>
-              </form>
-              </FormWrapper>
-
+              <h1>Reviews</h1>
+              <hr />
+              <AllForms ratings={this.state.totalRatings} totalReviews={this.state.totalReviews} handleFilterClick={this.handleFilterClick} languages={this.state.totalLanguages} keywords={this.state.popularMentions}/>
             </div>
-            <PopularMentionsForm/>
-
           </div>
 
-
-
           <div className="searchBar">
-            [SomeSearchBar]
+            <SearchBar handleSearchChange={this.handleSearchChange} selectedPopularMentions={this.state.reviewText} handleSearchSubmit={this.handleSearchSubmit} query={this.state.query}/>
           </div>
 
            <div className="reviewsList">
-             <ReviewsList reviewsList={this.state.reviewsList}/>
+             <ReviewsList reviewsList={this.state.reviewsList} keywords={this.state.reviewText}/>
           </div>
 
         </div>
 
-      </div>
+      </ReviewsModuleWrapper>
     )
   }
 

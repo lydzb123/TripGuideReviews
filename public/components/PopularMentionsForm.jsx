@@ -1,27 +1,63 @@
-import React from 'react';
+import React, {useState} from 'react';
+import styled from 'styled-components';
 
 
-const PopularMentionsForm = () => {
-  //get all keywords
-  //assign to keywordOptions array
-  const keywordOptions = ["keyword1", "keyword2", "keyword3", "keyword4"];
+
+const ButtonsContainer = styled.div`
+padding: 4px 0 12px 0;
+display: flex-inline;
+justify-content: space-around;
+width: 100%;
+
+label {
+  font-size: 14px;
+}
+
+button {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 8px 0 0 8px;
+  x white;
+  outline: none;
+}
+`;
+
+const FilterFormContainer = styled.div`
+background-color: white;
+padding: 12px;
+`;
+
+
+
+const PopularMentionsForm = ({keywords, handleFilterClick, onPopularClick, isSelected}) => {
+
+
 
   return (
-    <div className="filterFormContainer" id="PopularMentionsForm">
+     <FilterFormContainer>
+        <label>Popular Mentions</label>
+          <ButtonsContainer>
+          <button className="reviewText" value="allReviews"
+            onClick={(e) => {
+              handleFilterClick(e);
+            }}>
+          All Reviews
+          </button>
+            {keywords.map((word, i) => (
+                <button className="reviewText" value={word}
+                  onClick={(e) => {
+                    handleFilterClick(e, word);
+                    onPopularClick(e);
+                  }}
+                  style={{backgroundColor: isSelected[word]? "black" : "white", color: !isSelected[word]? "black" : "white"}}
+                  key={i}>
+                  {word}
+                </button>
+            ))}
+          </ButtonsContainer>
 
-      <h2>Popular Mentions</h2>
-      <form className="filterForm">
-
-        {keywordOptions.map(option => (
-          <div className ="inputLine">
-              <label>
-                <input type="button" className="filterFormbutton" name={option} value={option}/>
-              </label>
-          </div>
-        ))}
-
-      </form>
-    </div>
+      </FilterFormContainer>
   )
 
 }

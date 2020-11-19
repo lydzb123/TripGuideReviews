@@ -49,28 +49,30 @@ let maxUserIDQuery = () => {
 
 let seedReviews = async () => {
 
-  for(let i = 0; i < 3000; i++) {
+  for(let i = 0; i < 2500; i++) {
 
   (async () => {
     var travelerTypes = ["Families", "Couples", "Solo", "Business", "Friends"];
     var reviewLanguages = ["English", "Chinese (Trad.)", "Japanese", "French", "German", "Spanish", "Italian", "Danish", "Korean", "Hebrew"];
     var years = ["2012", "2014", "2015", "2017", "2018", "2019", "2020"];
+    var pics = ["https://tripreviews.s3-us-west-1.amazonaws.com/places/the-winchester-mystery.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/download-1.jpg","https://tripreviews.s3-us-west-1.amazonaws.com/places/download-2.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/download.jpg","https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-2884866.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-3742639.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-5236075.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-alex-azabache-3214975.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-clicker-finger-5788811.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/placeimg_1000_480_any+(5).jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/the-winchester-mystery.jpg","https://tripreviews.s3-us-west-1.amazonaws.com/places/download-1.jpg","https://tripreviews.s3-us-west-1.amazonaws.com/places/download-2.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/download.jpg","https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-2884866.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-3742639.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-aadil-5236075.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-alex-azabache-3214975.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/pexels-clicker-finger-5788811.jpg", "https://tripreviews.s3-us-west-1.amazonaws.com/places/placeimg_1000_480_any+(5).jpg"];
+
     await seed.seed(
       1,
       "reviews",
       {
-        attractionID: faker.random.number({min: 1, max: maxAttractionID}),
+        attractionID: faker.random.number({min: 1, max: 2}),
         userID: faker.random.number({min: 1, max: maxUserID}),
-        title: faker.random.words(12),
+        title: faker.random.words(8),
         reviewText: faker.random.words(120),
-        dateOfExperience: faker.date.recent,
-        dateOfReview: faker.date.recent,
+        dateOfExperience: faker.date.between('2020-11-17', '2016-12-31'),
+        dateOfReview: faker.date.between('2020-11-17', '2016-12-31'),
         // dateOfExperience: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
         // dateOfReview: faker.date.month() + ' ' + years[faker.random.number({min: 0, max: 6})],
-        travelerRating: faker.random.number({min: 1, max: 5}),
+        travelerRating: faker.random.number({min: 1, max: faker.random.number({min: 1, max: 5})}),
         travelerType: travelerTypes[faker.random.number({min: 0, max: 4})],
         reviewLanguage: reviewLanguages[faker.random.number({min: 0, max: 9})],
-        photos: faker.image.city
+        photos: pics[faker.random.number({min: 0, max: 18})]
       }
     )
     seed.exit();
