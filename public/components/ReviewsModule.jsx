@@ -134,8 +134,11 @@ class ReviewsModule extends React.Component {
     selected[0] = val;
   };
 
+  console.log(key, val, selected);
   //if i check my target
-  if((event.target.checked === true && selected.includes(val) === false)
+  if (key === "reviewText" && val === "allReviews") {
+    selected = [];
+  } else if((event.target.checked === true && selected.includes(val) === false)
   || key === "reviewText" && !selected.includes(val)){
     selected.push(val);
   } else if (key === "reviewText" && selected.includes(val)) {

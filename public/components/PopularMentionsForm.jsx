@@ -38,9 +38,10 @@ const PopularMentionsForm = ({keywords, handleFilterClick, onPopularClick, isSel
      <FilterFormContainer>
         <label>Popular Mentions</label>
           <ButtonsContainer>
-          <button className="reviewText" value="allReviews"
+          <button className="reviewText" style={{backgroundColor: isSelected.allReviews? "black" : "white", color: !isSelected.allReviews? "black" : "white"}} value="allReviews"
             onClick={(e) => {
               handleFilterClick(e);
+              onPopularClick(e);
             }}>
           All Reviews
           </button>

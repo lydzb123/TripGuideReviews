@@ -39,17 +39,32 @@ constructor(props) {
   super(props);
 
   this.state = {
+    allReviews: true
   }
   this.onPopularClick = this.onPopularClick.bind(this);
 }
 
 onPopularClick (e) {
-let oldState = this.state;
+  let oldState = this.state;
+
+if(e.target.value === "allReviews") {
+
+for(let key in oldState) {
+  oldState[key] = false;
+};
+oldState.allReviews = true;
+this.setState({
+  ...oldState
+});
+
+}
+
+else {
+oldState.allReviews = false;
   if(oldState[e.target.value] === undefined) {
     this.setState({
       ...oldState,
-     [e.target.value]: true
-
+     [e.target.value]: true,
     });
   } else {
     oldState[e.target.value] = !oldState[e.target.value];
@@ -57,6 +72,7 @@ let oldState = this.state;
       ...oldState
     });
   }
+}
 }
 
   render() {
