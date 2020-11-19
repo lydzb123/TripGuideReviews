@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReviewRatingMeter from './ReviewRatingMeter.jsx';
 import styled from 'styled-components';
+import moment from 'moment';
 
 
 const ReviewWrapper = styled.div`
@@ -61,9 +62,6 @@ p {
   height: 24px;
   vertical-align: sub;
 }
-
-
-
 `;
 
 const PhotoBar = styled.div`
@@ -90,6 +88,8 @@ const ReviewBody = ({rating, title, text, photos, experienceDate, keywords})=> {
   }
 
   var truncated = text.slice(0,277);
+  var timestamp = moment(experienceDate).format('LL');
+
   return(
     <div className="space">
     <ReviewWrapper>
@@ -102,7 +102,7 @@ const ReviewBody = ({rating, title, text, photos, experienceDate, keywords})=> {
 
   </div>
 
-        <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
+        <h5><span className="bold">Date of experience:</span> {timestamp}</h5>
     </ReviewWrapper>
     </div>
   )

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 
 const UserHeaderBar = styled.div`
@@ -33,10 +34,13 @@ display: flex;
 `;
 
 const UserHeader = ({name, profilePhoto, reviewDate, location, contributions}) => {
+
+  var timestamp = moment(reviewDate).format('LL');
+
   return(
     <UserHeaderBar>
       <img className="profilepic" src={profilePhoto}/>
-      <div className="userHead"><b>{name}</b> wrote a review {reviewDate}
+      <div className="userHead"><b>{name}</b> wrote a review {timestamp}
       <div className="userInfo"><img className="location" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-marker-50.png"></img>{location} • {contributions} contributions</div></div>
     </UserHeaderBar>
 
