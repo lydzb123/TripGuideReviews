@@ -49,7 +49,21 @@ p {
 .link{
   font-size: 14px;
   color: #8c8c8c;
+  text-decoration-style: dotted;
+  text-decoration-line: underline;
+  text-decoration-color: #8c8c8c;
+
 }
+
+
+.arrow {
+  width: 24px;
+  height: 24px;
+  vertical-align: sub;
+}
+
+
+
 `;
 
 const PhotoBar = styled.div`
@@ -57,37 +71,36 @@ background: url(${props=> props.photo});
 background-size: cover;
 background-repeat: no-repeat;
 background-position: center;
-
 width: 100%;
-height: 200px;
+height: 150px;
 `;
 
 
 const ReviewBody = ({rating, title, text, photos, experienceDate, keywords})=> {
 
-const [readMore, setReadMore] = useState(false);
 
   var number = rating;
 
 
-  const content= text.slice(0,277);
-  const extraContent= (
-  <div>
-    <p className="extra-content">
-      {text}
-    </p>
-  </div>
-  )
 
-  const linkName = readMore ? 'Read Less ' :'Read More >> ';
+  const [isTruncated, setIsTruncated] = useState(true);
 
+  const toggleReadMore = () => {
+    setIsTruncated(!isTruncated);
+  }
+
+  var truncated = text.slice(0,277);
   return(
     <div className="space">
     <ReviewWrapper>
       <PhotoBar photo={photos}/>
       <ReviewRatingMeter rating={rating}/>
-        <h4>{title}</h4>
-        <p>{text}</p>
+        <p>{isTruncated? truncated : text}</p>
+  <div class="read" onClick={toggleReadMore}>{isTruncated?
+  <p class="link">Read More<img class="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-down-24.png"/> </p>:
+  <p class="link">Read Less<img class="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-up-24.png"/></p>}
+
+  </div>
 
         <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
     </ReviewWrapper>
