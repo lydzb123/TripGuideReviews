@@ -188,6 +188,7 @@ module.exports = {
       ${masterQueryString}
       ORDER BY dateOfReview DESC
       LIMIT 5
+      OFFSET ${filters.offset}
       `,
       (err, results) => {
         if (err) {

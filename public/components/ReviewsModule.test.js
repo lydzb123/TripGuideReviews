@@ -40,6 +40,15 @@ describe('ReviewsModule Component: ', () => {
 
 });
 
+describe('ReviewsModule Component: ', () => {
+
+  it('should send a GET request for reviews on click on an input', () => {
+  const {wrapper} = setup();
+  expect(wrapper.find(AllForms).exists()).toBe(true);
+  });
+
+});
+
 
 // it('renders an `.icon-star`', () => {
 //   const wrapper = shallow(<MyComponent />);

@@ -8,8 +8,35 @@ margin-bottom: 12px;
 background-color: white;
 `;
 
+const ButtonBar = styled.div`
+width: 100%;
+height: 66px;
+background-color: white;
+display: flex;
+justify-content: space-between;
 
-const ReviewsList = ({reviewsList, keywords}) => {
+  button {
+    padding: 10px 12px 12px 12px;
+    display: inline;
+    vertical-align: text-top;
+    margin: 12px;
+    border-radius: 3px;
+  }
+  .previous{
+    background-color: white;
+    border: 1px solid grey;
+
+  }
+
+  .next{
+    background-color: black;
+    color: white;
+  }
+}
+`;
+
+
+const ReviewsList = ({reviewsList, keywords, offsetAndSearch}) => {
   return (
     <div>
       <div>
@@ -20,7 +47,10 @@ const ReviewsList = ({reviewsList, keywords}) => {
           </ReviewEntry>
         ))}
       </div>
-
+      <ButtonBar>
+      <button className="previous" name="previous" onClick={(e)=> {offsetAndSearch(e)}}>Previous</button>
+      <button className ="next" name ="next" onClick={(e)=> {offsetAndSearch(e)}}>Next</button>
+      </ButtonBar>
     </div>
   )
 
