@@ -15,6 +15,8 @@ input {
 `;
 
 
+//searchbar currently displays selected popular mentions
+//searchbar does not handle inputs yet
 
 const SearchBar = ({selectedPopularMentions, handleSearchChange, handleSearchSubmit, query}) => {
 
