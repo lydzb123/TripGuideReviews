@@ -12,13 +12,13 @@ const Dots = styled.div`
 
   &::before {
     content: '•••••';
-    letter-spacing: 2px;
+    letter-spacing: 1.8px;
     padding: 0;
     margin: 0;
     background: linear-gradient(90deg, #00aa6c ${props => props.percentage}, white ${props => props.percentage});
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 2px #00aa6c;
+    -webkit-text-stroke: 2.8px #00aa6c;
   }
 `;
 

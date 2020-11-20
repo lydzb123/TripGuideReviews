@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReviewRatingMeter from './ReviewRatingMeter.jsx';
 import styled from 'styled-components';
+import moment from 'moment';
 
 
 const ReviewWrapper = styled.div`
@@ -62,8 +63,9 @@ p {
   vertical-align: sub;
 }
 
-
-
+.highlight {
+  background-color: yellow;
+}
 `;
 
 const PhotoBar = styled.div`
@@ -79,30 +81,45 @@ height: 150px;
 const ReviewBody = ({rating, title, text, photos, experienceDate, keywords})=> {
 
 
+  //keyword highlighter:
+  // var splitText = text.split(' ');
+  // var joinedText = ""
+  // for( let i = 0; i < keywords.length; i++) {
+  //   for (let j = 0; j < splitText.length; j++) {
+  //     if(splitText[j] !== keywords[i]) {
+  //       joinedText += `<span>${splitText[j]} </span>`
+  //     } else {
+  //       joinedText += `<span className='highlight'>${splitText[j]}</span>`
+  //     }
+  //   }
+  // };
+
   var number = rating;
 
-
-
   const [isTruncated, setIsTruncated] = useState(true);
-
   const toggleReadMore = () => {
     setIsTruncated(!isTruncated);
   }
 
   var truncated = text.slice(0,277);
+  var timestamp = moment(experienceDate).format('LL');
+
+
+
   return(
     <div className="space">
     <ReviewWrapper>
       <PhotoBar photo={photos}/>
       <ReviewRatingMeter rating={rating}/>
+      <h4>{title}</h4>
         <p>{isTruncated? truncated : text}</p>
-  <div class="read" onClick={toggleReadMore}>{isTruncated?
-  <p class="link">Read More<img class="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-down-24.png"/> </p>:
-  <p class="link">Read Less<img class="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-up-24.png"/></p>}
+  <div className="read" onClick={toggleReadMore}>{isTruncated?
+  <p className="link">Read More<img className="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-down-24.png"/> </p>:
+  <p className="link">Read Less<img className="arrow" src="https://tripreviews.s3-us-west-1.amazonaws.com/icons8-sort-up-24.png"/></p>}
 
   </div>
 
-        <h5><span className="bold">Date of experience:</span> {experienceDate}</h5>
+        <h5><span className="bold">Date of experience:</span> {timestamp}</h5>
     </ReviewWrapper>
     </div>
   )

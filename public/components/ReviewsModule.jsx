@@ -54,14 +54,16 @@ class ReviewsModule extends React.Component {
       travelerType: [],
       timeOfYearFilter: [],
       reviewLanguage: [],
-      reviewText: []
+      reviewText: [],
+      offset: 0
       },
 
       totalReviews: [],
       totalRatings: [],
       totalLanguages: [],
       reviewsList: [],
-      popularMentions: []
+      popularMentions: [],
+      offset: 0
     };
 
     this.getReviews = this.getReviews.bind(this);
@@ -69,7 +71,8 @@ class ReviewsModule extends React.Component {
     this.getPopularMentions = this.getPopularMentions.bind(this);
     this.handleFilterClick = this.handleFilterClick.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleSearchSubmit = this.handleSearchSubmit.bind()
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.offsetAndSearch = this.offsetAndSearch.bind(this);
   }
 
   //when combining components, i will need to put the attractionID in state
@@ -134,8 +137,11 @@ class ReviewsModule extends React.Component {
     selected[0] = val;
   };
 
+  console.log(key, val, selected);
   //if i check my target
-  if((event.target.checked === true && selected.includes(val) === false)
+  if (key === "reviewText" && val === "allReviews") {
+    selected = [];
+  } else if((event.target.checked === true && selected.includes(val) === false)
   || key === "reviewText" && !selected.includes(val)){
     selected.push(val);
   } else if (key === "reviewText" && selected.includes(val)) {
@@ -161,25 +167,54 @@ class ReviewsModule extends React.Component {
 
 
 
+offsetAndSearch(e) {
+  if(e.target.name === "previous" && this.state.offset !== 0) {
+    let newOffset = this.state.offset - 5;
+
+    let all = this.state.allFilters;
+    all.offset = newOffset;
+    this.setState({
+      offset: newOffset,
+      allFilters: all
+    });
+  }
+    if (e.target.name === "next" && this.state.offset < this.state.totalReviews/5) {
+    let newOffset = this.state.offset + 5;
+
+    let all = this.state.allFilters;
+    all.offset = newOffset;
+    this.setState({
+      offset: newOffset,
+      allFilters: all
+    });
+  }
+
+  this.getReviews(this.state.attractionID, this.state.allFilters);
+//bug: doesnt work on next when there are no other keys within all filters,
+//allFilter = {offset: 0}
+//fix on serverside
+
+}
+
+
+
 
 
   handleSearchChange (e) {
-    event.preventDefault();
-    if(e.key === "Enter"){
-      alert("Enter was just pressed.");
-    } else {
       this.setState({
         query: [e.target.value]
       });
-    }
+
   }
 
   handleSearchSubmit (event) {
-    if(event.key === "Enter"){
-      event.preventDefault()
-      const formData = new FormData(event.target)
-      console.log(formData);
-    }
+    event.preventDefault()
+    // if(event.key === "Enter"){
+    //   this.setState({
+    //     query: [e.target.value]
+    //   });
+    // }
+    // on submit make a new state called full query?
   };
 
 
@@ -215,7 +250,7 @@ class ReviewsModule extends React.Component {
           </div>
 
            <div className="reviewsList">
-             <ReviewsList reviewsList={this.state.reviewsList} keywords={this.state.reviewText}/>
+             <ReviewsList reviewsList={this.state.reviewsList} keywords={this.state.reviewText} offsetAndSearch={this.offsetAndSearch}/>
           </div>
 
         </div>
