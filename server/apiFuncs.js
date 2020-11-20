@@ -206,50 +206,10 @@ module.exports = {
   }
 
 
-//count of languages for 1 attraction
-//   SELECT reviewLanguage AS language, COUNT(*) AS total FROM reviews WHERE attractionID=1 GROUP BY reviewLanguage
+// rework queries to handle these edge cases:
+  // reviewLanguage: [ 'allLanguages' ], offset: '0' }
+  // MASTER Q STRING------------ WHERE attractionID=1 AND
 
-// //all reviews with filters for 1 attraction
-//   SELECT
-//   r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
-//   r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
-//   FROM reviews r
-//   INNER JOIN users u
-//   ON r.userID = u.userID
-//   WHERE attractionID=1 AND r.reviewLanguage = "Danish"
-//   ORDER BY dateOfReview DESC
-//   LIMIT 5
-
-
-  // SELECT * FROM reviews WHERE travelerType = "Solo" OR travelerType = "Friends" AND travelerRating = 4 OR travelerRating = 3 OR travelerRating = 2;
-
-    // if (filters.timeOfYearFilter)
-
-    // }
-
-
-// key = "Solo"
-// {
-//   travelerRating: [ 'Excellent', 'Very Good' ],
-//   travelerType: [ 'Solo' ],
-//   timeOfYearFilter: [ 'Mar–May', 'Jun–Aug', 'Sep–Nov', 'Dec–Feb' ],
-//   reviewLanguage: [ 'allLanguages' ],
-//   reviewText: [ 'allReviews' ] }
-
-
-
-
-// dateOfExperience AS DatePartString (month, '2017/08/25') AS
-// SELECT DATENAME(month, '2017/08/25') AS DatePartString;
-// SELECT DATENAME(yy, '2017/08/25') AS DatePartString;
-
-
-// SELECT
-// r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
-// r.title, r.dateOfReview, r.reviewText, r.reviewLanguage, r.travelerRating, r.dateOfExperience
-// FROM reviews r
-// INNER JOIN users u
-// WHERE attractionID=1 AND r.reviewLanguage = "English" AND (MONTH(dateOfExperience) = 12 OR MONTH(dateOfExperience) = 1 OR MONTH(dateOfExperience) = 2)
-// ORDER BY dateOfReview DESC
-// LIMIT 5
+  // REQ QUERIES----------------- { offset: '0' } or,  { offset: '5' } just 1 property called offset
+  // MASTER Q STRING------------ WHERE attractionID=1 AND
 
