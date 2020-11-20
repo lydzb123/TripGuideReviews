@@ -1,116 +1,40 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import sinon from 'sinon';
 
-jest.useFakeTimers();
-
-// render fullapp
-
-// Components
-import ReviewsModule from './ReviewsModule.jsx';
 import AllForms from './AllForms.jsx';
+import ReviewsList from './ReviewsList.jsx';
+import SearchBar from './SearchBar.jsx';
+import PopularMentionsForm from './PopularMentionsForm.jsx';
+import ReviewsModule from './ReviewsModule.jsx';
+import UserHead from './SearchBar.jsx';
+import ReviewEntry from './PopularMentionsForm.jsx';
+import UserHeader from './UserHeader.jsx';
+import ReviewBody from './ReviewBody.jsx';
 
 
-// function setup() {
-//   const props = {
-//     imgPath: 'some/image/path/to/a/mock/image',
-//   };
-//   const wrapper = shallow(<WelcomeMessage />);
-//   return { wrapper, props };
-// }
+function setup() {
+  const wrapper = shallow(<ReviewsModule/>);
+  return {wrapper};
+}
 
-// describe('WelcomeMessage Test Suite', () => {
-//   it('Should have an image', () => {
-//     const { wrapper } = setup();
-//     expect(wrapper.find('img').exists()).toBe(true);
-//   });
-// });
-// describe('Testing ReviewsModule: Clicking Filter Inputs', () => {
 
-  function setup() {
-    const wrapper = shallow(<ReviewsModule/>);
-    return {wrapper};
-  }
+describe('ReviewsModule renders: ', () => {
 
-describe('ReviewsModule Component: ', () => {
-  it('renders form components', () => {
+  it('should render all input forms', () => {
   const {wrapper} = setup();
   expect(wrapper.find(AllForms).exists()).toBe(true);
   });
 
+  it('should render a list of reviews', () => {
+    const {wrapper} = setup();
+    expect(wrapper.find(ReviewsList).exists()).toBe(true);
+    });
+
+  it('should render a search bar', () => {
+    const {wrapper} = setup();
+    expect(wrapper.find(SearchBar).exists()).toBe(true);
+    });
+
 });
-
-describe('ReviewsModule Component: ', () => {
-
-  it('should send a GET request for reviews on click on an input', () => {
-  const {wrapper} = setup();
-  expect(wrapper.find(AllForms).exists()).toBe(true);
-  });
-
-});
-
-
-// it('renders an `.icon-star`', () => {
-//   const wrapper = shallow(<MyComponent />);
-//   expect(wrapper.find('.icon-star')).to.have.lengthOf(1);
-// });
-
-
-//   it('should send a GET request for reviews on click select', ()=> {
-
-//   });
-
-// });
-
-
-
-// it('should add the clicked value to the correlating state filter', () => {
-
-
-//   expect(checkbox.text()).toEqual('Off');
-
-//   checkbox.find('input').simulate('change');
-
-//   expect(checkbox.text()).toEqual('On');
-
-
-
-
-//   });
-
-//   it('should send a GET request for reviews on click select', ()=> {
-
-//   });
-
-
-//   it('should send a GET request for reviews on click deselect', ()=> {
-
-//   });
-
-//   it('should send an allfilters query object with keys for every filter', ()=> {
-
-//   });
-
-//   it('should not get back reviews that do not match the filters', ()=> {
-
-//   });
-
-// });
-
-//when i click an input type checkbox
-//it should add the event.target.value to the correlating state filter
-
-//when i click an input type checkbox
-//it should send a get req request with allfilters object
-
-//when i click an input type checkbox
-//it should send a get req request with allfilters object
-  //all filters object should have keys for x, y, z filters
-
-//when i click an input type checkbox
-  //it should get a response of 5 reviews
-
-
-//when i deselect an input checkbox
-  //it should remove the event.target.value from the associated filter state
-
