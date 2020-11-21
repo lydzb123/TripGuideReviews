@@ -148,10 +148,8 @@ class ReviewsModule extends React.Component {
     selected = selected.filter(item => item !== val);
   }
 
-   //console.log(event.target.checked);
    if(event.target.checked === false ) {
     selected = selected.filter(item => item !== val);
-    console.log('inside selected', selected);
   }
 
   let all = this.state.allFilters;

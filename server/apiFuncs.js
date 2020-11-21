@@ -177,7 +177,7 @@ module.exports = {
           masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
         }
 
-        console.log('MASTER Q STRING------------', masterQueryString);
+        // console.log('MASTER Q STRING------------', masterQueryString);
 
       dbConnection.query(`SELECT
         r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
