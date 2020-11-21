@@ -5,10 +5,13 @@ const {getReviews, getMetrics, getPopularMentions} = require('./apiFuncs.js');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(express.static('client'));
+app.use(express.static('client/dist'));
 
 
-
+/* API LINK FOR PROXY */
+app.get('/api/attractions/:attractionid', (req, res) => {
+  res.sendFile('../client/dist/bundle.js');
+})
 
 
 
