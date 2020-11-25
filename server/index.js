@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(express.static('client/dist'));
 
 
+
 /* API LINK FOR PROXY */
 app.get('/api/attractions/:attractionid', (req, res) => {
   res.sendFile('../client/dist/bundle.js');
@@ -71,7 +72,7 @@ app.get('/api/attractions/:attractionid/reviews/keywords', (req, res) => {
 
 
 
-const port = process.env.PORT || 3000;
+const port = 5000;
 app.listen(port, () => {
   console.log('Listening at ', port);
 })

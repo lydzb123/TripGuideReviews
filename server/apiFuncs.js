@@ -3,6 +3,7 @@ const keyword_extractor = require("keyword-extractor");
 
 const dbConnection = mysql.createConnection({
   user: 'root',
+  password: 'PassW0rd!',
   database: 'tripAdvisor',
   multipleStatements: true
 });

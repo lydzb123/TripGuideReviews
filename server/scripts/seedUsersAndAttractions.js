@@ -15,7 +15,7 @@ const seed = new Seeder(
   1,
   "localhost",
   "root",
-  "",
+  "PassW0rd!",
   "tripAdvisor"
 );
 
