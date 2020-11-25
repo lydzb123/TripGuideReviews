@@ -137,7 +137,7 @@ class ReviewsModule extends React.Component {
     selected[0] = val;
   };
 
-  console.log(key, val, selected);
+  //console.log(key, val, selected);
   //if i check my target
   if (key === "reviewText" && val === "allReviews") {
     selected = [];
@@ -154,9 +154,11 @@ class ReviewsModule extends React.Component {
 
   let all = this.state.allFilters;
   all[key] = selected;
+  all.offset = 0;
 
   this.setState({
     [key]: selected,
+    offset: 0,
     allFilters: all
   });
 

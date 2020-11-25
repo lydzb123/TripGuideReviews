@@ -162,23 +162,33 @@ module.exports = {
          if (filters.reviewLanguage && filters.reviewLanguage[0] !== "allLanguages") {
           let languageQuery = `r.reviewLanguage = "${filters.reviewLanguage[0]}"`
           masterQuery.push(languageQuery);
-          console.log('inside language query', filters.reviewLanguage);
+         // console.log('inside language query', filters.reviewLanguage);
         }
 
         //TypeError: Cannot read property '0' of undefined
         //case of only 1 filter
 
         var masterQueryString = "";
-        if( Object.keys(filters).length === 1 && filters.reviewLanguage){
-          masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
-          if (filters.reviewLanguage[0] === "allLanguages") {
-          masterQueryString = `WHERE attractionID=${attractionID}`
-          }
-        }else {
+
+       if (masterQuery.length === 0) {
+            masterQueryString = `WHERE attractionID=${attractionID}`
+       } else {
           masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
         }
 
-        // console.log('MASTER Q STRING------------', masterQueryString);
+
+        // if(filters.reviewLanguage && Object.keys(filters).length > 2){
+        //   masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+        //   if (filters.reviewLanguage[0] === "allLanguages") {
+        //   masterQueryString = `WHERE attractionID=${attractionID}`
+        //   }
+        // }else {
+        //   masterQueryString = `WHERE attractionID=${attractionID} AND ` + masterQuery.join(' AND ');
+        // }
+
+       //console.log('MASTER Q STRING------------', masterQueryString);
+       //console.log('MASTERQUERY JOIN ------------', masterQuery);
+       //console.log('FILTERS------------',filters);
 
       dbConnection.query(`SELECT
         r.photos, r.attractionID, u.username, u.userLocation, u.contributions, u.profilePhoto,
@@ -214,3 +224,16 @@ module.exports = {
   // REQ QUERIES----------------- { offset: '0' } or,  { offset: '5' } just 1 property called offset
   // MASTER Q STRING------------ WHERE attractionID=1 AND
 
+  //when i hit all reviews to deselect all else
+  // WHERE attractionID=1 AND
+
+
+//upon deselect of everything
+//   MASTER Q STRING------------ WHERE attractionID=1 AND
+// FILTERS------------ { offset: '0' }
+
+
+// MASTER Q STRING------------ WHERE attractionID=1 AND
+// FILTERS------------ { offset: '0' }
+// MASTER Q STRING------------ WHERE attractionID=1 AND
+// FILTERS------------ { offset: '5' }
