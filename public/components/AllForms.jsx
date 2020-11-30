@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 const FormWrapper = styled.div`
 display: flex;
-justify-content: center;
+justify-content: space-around;
 
   input {
     padding: 12px 0 0 0;

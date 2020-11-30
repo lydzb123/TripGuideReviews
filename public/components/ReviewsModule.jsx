@@ -9,17 +9,18 @@ const ReviewsModuleWrapper = styled.div`
   font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: center;
-  width: 600px;
+  width: 900px;
+  padding-top: 12px;
   margin: 0 auto;
   margin-top: -10px;
 
   .mainFilters{
     background-color: white;
     margin-top: 0;
-    padding-top: 12px;
   }
 
   h1 {
+  padding-top: 22px;
     margin-left: 22px;
   }
 `;

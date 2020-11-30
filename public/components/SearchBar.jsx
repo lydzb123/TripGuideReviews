@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const SearchBarInput = styled.form`
 input {
-  width: 600px;
+  width: 900px;
   height: 40px;
   margin: 20px 0px;
   border-color: #000;
